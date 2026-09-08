@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { apiUrl } from '../api'
 
 interface Project {
   id: number
@@ -13,7 +14,7 @@ export default function ProjectDetail() {
   const [project, setProject] = useState<Project | null>(null)
 
   useEffect(() => {
-    fetch('/api/projects')
+    fetch(apiUrl('/api/projects'))
       .then(res => res.json())
       .then(data => {
         const found = data.projects.find((p: Project) => String(p.id) === String(id))

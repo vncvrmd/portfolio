@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { apiUrl } from '../api'
 
 interface Project {
   id: number
@@ -11,7 +12,7 @@ export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([])
 
   useEffect(() => {
-    fetch('/api/projects')
+    fetch(apiUrl('/api/projects'))
       .then(res => res.json())
       .then(data => setProjects(data.projects))
       .catch(err => console.error(err))

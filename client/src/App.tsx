@@ -5,6 +5,7 @@ import ProjectsPage from './pages/Projects'
 import ContactPage from './pages/Contact'
 import Certifications from './pages/Certifications'
 import ProjectDetail from './pages/ProjectDetail'
+import { apiUrl } from './api'
 
 interface Project {
   id: number
@@ -27,9 +28,9 @@ function App() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/about').then(res => res.json()),
-      fetch('/api/skills').then(res => res.json()),
-      fetch('/api/projects').then(res => res.json())
+      fetch(apiUrl('/api/about')).then(res => res.json()),
+      fetch(apiUrl('/api/skills')).then(res => res.json()),
+      fetch(apiUrl('/api/projects')).then(res => res.json())
     ])
       .then(([aboutData, skillsData, projectsData]) => {
         setAbout(aboutData.about)
@@ -46,7 +47,7 @@ function App() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const response = await fetch('/api/contact', {
+    const response = await fetch(apiUrl('/api/contact'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
