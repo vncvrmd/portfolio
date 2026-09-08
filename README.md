@@ -48,6 +48,11 @@ Open the Vite URL shown in the terminal, usually `http://localhost:5173`. API re
 - `GET /api/projects/{id}` — a single project
 - `POST /api/contact` — contact form submission endpoint
 
+## Live
+
+- Client: https://vncvrmd-portfolio.vercel.app
+- API: https://portfolio-uu0q.onrender.com
+
 ## Deployment
 
 Vercel does not run ASP.NET Core apps directly, so the frontend and backend are deployed separately:
