@@ -29,8 +29,10 @@ public static class PortfolioData
 
     public static readonly IReadOnlyList<Project> Projects = new[]
     {
-        new Project(1, "Personal Portfolio", "A responsive portfolio site built with React, Tailwind CSS, and ASP.NET Core.", "https://your-portfolio.example.com"),
-        new Project(2, "Task Manager App", "A task management application with project boards, status updates, and responsive UI.", "https://your-taskapp.example.com"),
-        new Project(3, "API Dashboard", "A backend-driven dashboard that displays analytics data, API health, and performance metrics.", "https://your-dashboard.example.com")
+        new Project(1, "Project BASAdent", "Quality Assurance Officer (Present) — overseeing end-to-end QA strategies for a full-stack application (React, Node.js, PostgreSQL). Established unit and component testing (Jest, Vitest, React Testing Library), E2E and HTTP testing (Cypress, Supertest), and managed data/file storage integration using Supabase/NeonDB and Cloudinary/Cloudflare R2.", ""),
+        new Project(2, "LMD Dental Clinic", "Business Analyst — designed the website with an appointment booking system.", ""),
+        new Project(3, "OBRA", "Full Stack Developer — developed a complete mobile application using Swift.", ""),
+        new Project(4, "UST RE-CYCLE", "Front-End Developer — built a mock web application for campus recycling.", ""),
+        new Project(5, "Panorama", "UI/UX Designer — created a web application with a focus on a strong user experience.", "")
     };
 }

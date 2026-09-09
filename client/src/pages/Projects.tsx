@@ -28,7 +28,7 @@ export default function ProjectsPage() {
               <h3 className="font-semibold text-slate-100">{p.title}</h3>
               <p className="mt-2 text-slate-300">{p.description}</p>
               <div className="mt-4 flex gap-3">
-                <a href={p.url} target="_blank" rel="noreferrer" className="inline-block text-cyan-300">Visit</a>
+                {p.url && <a href={p.url} target="_blank" rel="noreferrer" className="inline-block text-cyan-300">Visit</a>}
                 <a href={`/projects/${p.id}`} className="inline-block text-sm font-semibold text-slate-100 bg-slate-800 px-3 py-1 rounded hover:bg-slate-700">Details</a>
               </div>
             </article>

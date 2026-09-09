@@ -30,7 +30,9 @@ export default function ProjectDetail() {
     <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
       <h2 className="text-2xl font-semibold text-slate-100">{project.title}</h2>
       <p className="mt-4 text-slate-300">{project.description}</p>
-      <a href={project.url} target="_blank" rel="noreferrer" className="mt-6 inline-block text-cyan-300">Visit project</a>
+      {project.url && (
+        <a href={project.url} target="_blank" rel="noreferrer" className="mt-6 inline-block text-cyan-300">Visit project</a>
+      )}
     </section>
   )
 }
