@@ -5,6 +5,7 @@ build/
 .env
 .DS_Store
 .vscode/
+.claude/
 
 # .NET
 server/bin/

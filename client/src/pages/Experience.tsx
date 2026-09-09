@@ -48,8 +48,8 @@ const education: Entry = {
 
 function EntryCard({ entry }: { entry: Entry }) {
   return (
-    <article className="rounded-2xl border border-slate-800 bg-slate-950/90 p-4">
-      <h3 className="font-semibold text-slate-100">{entry.title}</h3>
+    <article className="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 transition-colors duration-200 hover:border-cyan-400">
+      <h3 className="font-heading font-semibold text-slate-100">{entry.title}</h3>
       <p className="mt-1 text-sm text-cyan-300">{entry.subtitle}</p>
       <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-300">
         {entry.bullets.map(bullet => (
@@ -64,7 +64,7 @@ export default function Experience() {
   return (
     <div className="space-y-8">
       <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
-        <h2 className="text-2xl font-semibold text-slate-100">Professional Experience</h2>
+        <h2 className="font-heading text-2xl font-semibold text-slate-100">Professional Experience</h2>
         <div className="mt-6 space-y-4">
           {professionalExperience.map(entry => (
             <EntryCard key={entry.title} entry={entry} />
@@ -73,7 +73,7 @@ export default function Experience() {
       </section>
 
       <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
-        <h2 className="text-2xl font-semibold text-slate-100">Leadership & University Experience</h2>
+        <h2 className="font-heading text-2xl font-semibold text-slate-100">Leadership & University Experience</h2>
         <div className="mt-6 space-y-4">
           {leadershipExperience.map(entry => (
             <EntryCard key={entry.title} entry={entry} />
@@ -82,7 +82,7 @@ export default function Experience() {
       </section>
 
       <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
-        <h2 className="text-2xl font-semibold text-slate-100">Education</h2>
+        <h2 className="font-heading text-2xl font-semibold text-slate-100">Education</h2>
         <div className="mt-6">
           <EntryCard entry={education} />
         </div>
