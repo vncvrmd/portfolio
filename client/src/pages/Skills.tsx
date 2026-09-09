@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface SkillGroup {
   category: string
   items: string
@@ -36,19 +34,19 @@ const skillGroups: SkillGroup[] = [
 
 export default function Skills() {
   return (
-    <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
-      <h2 className="font-heading text-2xl font-semibold text-slate-100">Skills</h2>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+    <div className="space-y-6">
+      <div>
+        <span className="section-label">Toolbox</span>
+        <h2 className="font-heading text-3xl font-bold text-ink">Skills</h2>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
         {skillGroups.map(group => (
-          <article
-            key={group.category}
-            className="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 transition-colors duration-200 hover:border-cyan-400"
-          >
-            <h3 className="font-heading font-semibold text-slate-100">{group.category}</h3>
-            <p className="mt-2 text-slate-300">{group.items}</p>
+          <article key={group.category} className="card">
+            <h3 className="font-heading font-semibold text-ink">{group.category}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-body">{group.items}</p>
           </article>
         ))}
       </div>
-    </section>
+    </div>
   )
 }

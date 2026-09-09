@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface Certification {
   title: string
   detail: string
@@ -26,19 +24,19 @@ const certifications: Certification[] = [
 
 export default function Certifications() {
   return (
-    <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
-      <h2 className="font-heading text-2xl font-semibold text-slate-100">Certifications</h2>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+    <div className="space-y-6">
+      <div>
+        <span className="section-label">Recognition</span>
+        <h2 className="font-heading text-3xl font-bold text-ink">Certifications</h2>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
         {certifications.map(cert => (
-          <article
-            key={cert.title}
-            className="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 transition-colors duration-200 hover:border-cyan-400"
-          >
-            <h3 className="font-heading font-semibold text-slate-100">{cert.title}</h3>
-            {cert.detail && <p className="mt-2 text-slate-300">{cert.detail}</p>}
+          <article key={cert.title} className="card">
+            <h3 className="font-heading font-semibold text-ink">{cert.title}</h3>
+            {cert.detail && <p className="mt-2 text-sm font-medium text-accent2">{cert.detail}</p>}
           </article>
         ))}
       </div>
-    </section>
+    </div>
   )
 }

@@ -13,8 +13,16 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: #020617;
+  color: theme('colors.body');
+  background-color: theme('colors.surface');
+  background-image:
+    radial-gradient(900px 520px at 88% -8%, rgba(124, 107, 245, 0.14), transparent 62%),
+    radial-gradient(720px 460px at -6% 4%, rgba(163, 230, 53, 0.07), transparent 58%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 22px 22px;
+  background-attachment: fixed, fixed, fixed;
   font-family: 'DM Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
@@ -33,6 +41,15 @@ h3 {
   font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
 }
 
+code,
+pre {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+
+::selection {
+  background: rgba(124, 107, 245, 0.35);
+}
+
 @layer base {
   a,
   button,
@@ -47,7 +64,77 @@ h3 {
   input:focus-visible,
   textarea:focus-visible,
   [tabindex]:focus-visible {
-    outline: 2px solid theme('colors.cyan.400');
+    outline: 2px solid theme('colors.accent');
+  }
+}
+
+@layer components {
+  .glass-nav {
+    @apply sticky top-0 z-50 border-b border-edge bg-surface/80 backdrop-blur-md;
+  }
+
+  .btn {
+    @apply inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-white shadow-[0_8px_24px_-12px_rgba(124,107,245,0.65)] hover:bg-accent-strong;
+  }
+
+  .btn-outline {
+    @apply btn border border-edge-strong text-ink hover:border-accent hover:text-accent;
+  }
+
+  .btn-ghost {
+    @apply btn text-muted hover:bg-surface-3 hover:text-ink;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-2 rounded-full border border-edge-strong bg-panel px-3.5 py-1 text-xs text-muted;
+  }
+
+  .badge-dot {
+    @apply h-1.5 w-1.5 animate-pulse-dot rounded-full bg-accent2;
+  }
+
+  .card {
+    @apply rounded-2xl border border-edge bg-panel/80 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-[0_16px_40px_-24px_rgba(124,107,245,0.45)];
+  }
+
+  .section {
+    @apply rounded-3xl border border-edge bg-panel/60 p-6 shadow-[0_24px_60px_-40px_rgba(0,0,0,0.7)] sm:p-8;
+  }
+
+  .section-label {
+    @apply mb-2 inline-block text-xs font-semibold uppercase tracking-[0.14em] text-accent2;
+  }
+
+  .field-label {
+    @apply mb-1 block text-sm text-muted;
+  }
+
+  .field-input {
+    @apply w-full rounded-2xl border border-edge bg-surface-2 px-4 py-3 text-ink placeholder:text-faint transition-colors duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25;
+  }
+
+  .pill-tag {
+    @apply rounded-full border border-edge-strong bg-surface-3 px-3 py-1 text-xs text-body;
+  }
+
+  .status-toast {
+    @apply flex items-center gap-2 rounded-xl border border-ok/30 bg-ok/10 px-4 py-2.5 text-sm font-medium text-ok;
+  }
+
+  .terminal {
+    @apply overflow-hidden rounded-2xl border border-edge-strong bg-surface-2 font-mono shadow-[0_24px_60px_-26px_rgba(0,0,0,0.8)];
+  }
+
+  .terminal-bar {
+    @apply flex items-center gap-2 border-b border-white/5 bg-white/[0.02] px-4 py-3;
+  }
+
+  .terminal-dot {
+    @apply h-2.5 w-2.5 rounded-full;
   }
 }
 

@@ -1,5 +1,11 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { apiUrl } from '../api'
+
+interface About {
+  headline: string
+  details: string[]
+}
 
 const highlights = [
   { to: '/experience', title: 'Experience', description: 'Internships, leadership roles, and education.' },
@@ -8,38 +14,108 @@ const highlights = [
 ]
 
 export default function Home() {
+  const [about, setAbout] = useState<About | null>(null)
+
+  useEffect(() => {
+    fetch(apiUrl('/api/about'))
+      .then(res => res.json())
+      .then(data => setAbout(data.about))
+      .catch(err => console.error(err))
+  }, [])
+
   return (
-    <div className="space-y-8">
-      <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
-        <h1 className="font-heading text-3xl font-semibold text-slate-100">Welcome</h1>
-        <p className="mt-4 text-slate-300">This is my IT portfolio. Explore projects, experience, skills, and get in touch.</p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            to="/projects"
-            className="cursor-pointer rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-cyan-400"
-          >
-            View projects
-          </Link>
-          <Link
-            to="/contact"
-            className="cursor-pointer rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold text-slate-100 transition-colors duration-200 hover:border-cyan-400 hover:text-cyan-300"
-          >
-            Contact
-          </Link>
+    <div className="space-y-16">
+      <section className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <span className="badge">
+            <span className="badge-dot" />
+            Open to opportunities
+          </span>
+
+          <h1 className="mt-5 font-heading text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">
+            Building{' '}
+            <span className="relative whitespace-nowrap text-accent2">
+              modern, scalable
+              <svg
+                className="absolute -bottom-1 left-0 w-full"
+                height="8"
+                viewBox="0 0 200 8"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path d="M1 5.5C40 1.5 160 1.5 199 5.5" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" />
+              </svg>
+            </span>{' '}
+            web applications.
+          </h1>
+
+          <p className="mt-5 max-w-lg text-lg leading-relaxed text-body">
+            {about?.headline ??
+              'IT professional building modern, scalable web applications — from Salesforce automation to full-stack React and ASP.NET Core.'}
+          </p>
+
+          {about?.details && about.details.length > 0 && (
+            <ul className="mt-5 space-y-2">
+              {about.details.map(detail => (
+                <li key={detail} className="flex items-start gap-2.5 text-sm text-body">
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent2" />
+                  {detail}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/projects" className="btn-primary">
+              View projects
+            </Link>
+            <Link to="/contact" className="btn-outline">
+              Contact
+            </Link>
+          </div>
+        </div>
+
+        <div className="terminal">
+          <div className="terminal-bar">
+            <span className="terminal-dot bg-[#ec6a5e]" />
+            <span className="terminal-dot bg-[#f4be4f]" />
+            <span className="terminal-dot bg-[#61c554]" />
+            <span className="ml-2 text-xs text-faint">whoami.sh</span>
+          </div>
+          <div className="space-y-2.5 px-5 py-6 text-sm leading-relaxed">
+            <p className="text-body">
+              <span className="text-accent2">$</span> whoami
+            </p>
+            <p className="text-ink">IT graduate · full-stack &amp; Salesforce developer</p>
+            <p className="mt-4 text-body">
+              <span className="text-accent2">$</span> cat stack.txt
+            </p>
+            <p className="text-faint">
+              React · TypeScript · ASP.NET Core · C# · Apex · Tailwind CSS
+            </p>
+            <p className="mt-4 text-body">
+              <span className="text-accent2">$</span> ./deploy.sh --env production
+            </p>
+            <p className="text-ok">✓ build passed · deployed to Vercel + Render</p>
+            <p className="text-body">
+              <span className="text-accent2">$</span>{' '}
+              <span className="ml-0.5 inline-block h-4 w-2 animate-pulse bg-accent2 align-middle" />
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-3">
-        {highlights.map(item => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className="cursor-pointer rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors duration-200 hover:border-cyan-400"
-          >
-            <h2 className="font-heading font-semibold text-slate-100">{item.title}</h2>
-            <p className="mt-2 text-sm text-slate-300">{item.description}</p>
-          </Link>
-        ))}
+      <section>
+        <span className="section-label">Explore</span>
+        <h2 className="mb-6 font-heading text-2xl font-semibold text-ink">Quick links</h2>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {highlights.map(item => (
+            <Link key={item.to} to={item.to} className="card block">
+              <h3 className="font-heading font-semibold text-ink">{item.title}</h3>
+              <p className="mt-2 text-sm text-body">{item.description}</p>
+            </Link>
+          ))}
+        </div>
       </section>
     </div>
   )

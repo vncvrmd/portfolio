@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface Entry {
   title: string
   subtitle: string
@@ -48,45 +46,41 @@ const education: Entry = {
 
 function EntryCard({ entry }: { entry: Entry }) {
   return (
-    <article className="rounded-2xl border border-slate-800 bg-slate-950/90 p-4 transition-colors duration-200 hover:border-cyan-400">
-      <h3 className="font-heading font-semibold text-slate-100">{entry.title}</h3>
-      <p className="mt-1 text-sm text-cyan-300">{entry.subtitle}</p>
-      <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-300">
+    <article className="card">
+      <h3 className="font-heading font-semibold text-ink">{entry.title}</h3>
+      <p className="mt-1 text-sm font-medium text-accent2">{entry.subtitle}</p>
+      <ul className="mt-3 space-y-2 text-body">
         {entry.bullets.map(bullet => (
-          <li key={bullet}>{bullet}</li>
+          <li key={bullet} className="flex items-start gap-2.5">
+            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-edge-strong" />
+            <span>{bullet}</span>
+          </li>
         ))}
       </ul>
     </article>
   )
 }
 
+function Group({ label, title, entries }: { label: string; title: string; entries: Entry[] }) {
+  return (
+    <section>
+      <span className="section-label">{label}</span>
+      <h2 className="mb-6 font-heading text-2xl font-bold text-ink">{title}</h2>
+      <div className="space-y-4">
+        {entries.map(entry => (
+          <EntryCard key={entry.title} entry={entry} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export default function Experience() {
   return (
-    <div className="space-y-8">
-      <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
-        <h2 className="font-heading text-2xl font-semibold text-slate-100">Professional Experience</h2>
-        <div className="mt-6 space-y-4">
-          {professionalExperience.map(entry => (
-            <EntryCard key={entry.title} entry={entry} />
-          ))}
-        </div>
-      </section>
-
-      <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
-        <h2 className="font-heading text-2xl font-semibold text-slate-100">Leadership & University Experience</h2>
-        <div className="mt-6 space-y-4">
-          {leadershipExperience.map(entry => (
-            <EntryCard key={entry.title} entry={entry} />
-          ))}
-        </div>
-      </section>
-
-      <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
-        <h2 className="font-heading text-2xl font-semibold text-slate-100">Education</h2>
-        <div className="mt-6">
-          <EntryCard entry={education} />
-        </div>
-      </section>
+    <div className="space-y-12">
+      <Group label="Career" title="Professional Experience" entries={professionalExperience} />
+      <Group label="Campus" title="Leadership & University Experience" entries={leadershipExperience} />
+      <Group label="Academics" title="Education" entries={[education]} />
     </div>
   )
 }
