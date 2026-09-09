@@ -32,7 +32,8 @@ public static class PortfolioData
         new Project(1, "Project BASAdent", "Quality Assurance Officer (Present) — overseeing end-to-end QA strategies for a full-stack application (React, Node.js, PostgreSQL). Established unit and component testing (Jest, Vitest, React Testing Library), E2E and HTTP testing (Cypress, Supertest), and managed data/file storage integration using Supabase/NeonDB and Cloudinary/Cloudflare R2.", ""),
         new Project(2, "LMD Dental Clinic", "Business Analyst — designed the website with an appointment booking system.", ""),
         new Project(3, "OBRA", "Full Stack Developer — developed a complete mobile application using Swift.", ""),
-        new Project(4, "UST RE-CYCLE", "Front-End Developer — built a mock web application for campus recycling.", ""),
-        new Project(5, "Panorama", "UI/UX Designer — created a web application with a focus on a strong user experience.", "")
+        new Project(4, "UST RE-CYCLE", "Front-End Developer — built a mock web application for campus recycling.", "https://ust-re-cycle.vercel.app"),
+        new Project(5, "Panorama", "UI/UX Designer — created a web application with a focus on a strong user experience.", ""),
+        new Project(6, "Falcon Eye", "Campus safety and lost & found web application for a school community, with account registration and sign-in.", "https://falcon-eye.vercel.app")
     };
 }
