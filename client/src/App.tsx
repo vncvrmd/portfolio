@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import ProjectsPage from './pages/Projects'
 import ContactPage from './pages/Contact'
 import Certifications from './pages/Certifications'
+import Skills from './pages/Skills'
 import ProjectDetail from './pages/ProjectDetail'
 import { apiUrl } from './api'
 
@@ -73,6 +74,7 @@ function App() {
           <nav className="flex gap-3">
             <Link to="/" className="rounded-full px-4 py-2 text-sm hover:text-cyan-300">Home</Link>
             <Link to="/projects" className="rounded-full px-4 py-2 text-sm hover:text-cyan-300">Projects</Link>
+            <Link to="/skills" className="rounded-full px-4 py-2 text-sm hover:text-cyan-300">Skills</Link>
             <Link to="/certifications" className="rounded-full px-4 py-2 text-sm hover:text-cyan-300">Certifications</Link>
             <Link to="/contact" className="rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950">Contact</Link>
           </nav>
@@ -83,6 +85,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/skills" element={<Skills />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/projects/:id" element={<ProjectDetail />} />
