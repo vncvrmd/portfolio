@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { Routes, Route, Link, NavLink } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import ScrollLink from './components/ScrollLink'
 import Home from './pages/Home'
 import ProjectsPage from './pages/Projects'
 import ContactPage from './pages/Contact'
@@ -8,18 +9,64 @@ import Skills from './pages/Skills'
 import Experience from './pages/Experience'
 import ProjectDetail from './pages/ProjectDetail'
 
-const navLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/projects', label: 'Projects' },
-  { to: '/experience', label: 'Experience' },
-  { to: '/skills', label: 'Skills' },
-  { to: '/certifications', label: 'Certifications' }
+const sections = [
+  { id: 'home', label: 'Home', Component: Home },
+  { id: 'projects', label: 'Projects', Component: ProjectsPage },
+  { id: 'experience', label: 'Experience', Component: Experience },
+  { id: 'skills', label: 'Skills', Component: Skills },
+  { id: 'certifications', label: 'Certifications', Component: Certifications },
+  { id: 'contact', label: 'Contact', Component: ContactPage }
 ]
+
+const navLinks = sections.filter(s => s.id !== 'contact').map(({ id, label }) => ({ id, label }))
+
+function OnePageContent() {
+  return (
+    <>
+      {sections.map(({ id, Component }, index) => (
+        <section
+          key={id}
+          id={id}
+          className={`scroll-mt-24 py-16 sm:py-20 ${index > 0 ? 'border-t border-edge' : ''}`}
+        >
+          <Component />
+        </section>
+      ))}
+    </>
+  )
+}
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [activeId, setActiveId] = useState('home')
+  const location = useLocation()
+  const isHome = location.pathname === '/'
 
-  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+  useEffect(() => {
+    if (!isHome || !location.hash) return
+    const id = location.hash.slice(1)
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [isHome, location.hash])
+
+  useEffect(() => {
+    if (!isHome) return
+    const elements = sections
+      .map(s => document.getElementById(s.id))
+      .filter((el): el is HTMLElement => el !== null)
+    if (elements.length === 0) return
+
+    const observer = new IntersectionObserver(
+      entries => {
+        const visible = entries.find(entry => entry.isIntersecting)
+        if (visible) setActiveId(visible.target.id)
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    )
+    elements.forEach(el => observer.observe(el))
+    return () => observer.disconnect()
+  }, [isHome])
+
+  const navLinkClass = (isActive: boolean) =>
     `cursor-pointer rounded-full px-4 py-2 text-sm transition-colors duration-200 ${
       isActive ? 'bg-surface-3 font-semibold text-accent2' : 'text-body hover:text-ink'
     }`
@@ -28,24 +75,24 @@ function App() {
     <div className="flex min-h-screen flex-col">
       <header className="glass-nav">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 sm:px-10">
-          <Link
-            to="/"
+          <ScrollLink
+            to="/#home"
             className="inline-flex cursor-pointer items-baseline gap-0.5 font-heading text-lg font-bold tracking-tight text-ink"
-            onClick={() => setMenuOpen(false)}
+            onNavigate={() => setMenuOpen(false)}
           >
             <span>IT</span>
             <span className="text-accent2">Portfolio</span>
-          </Link>
+          </ScrollLink>
 
           <nav className="hidden items-center gap-1 md:flex">
             {navLinks.map(link => (
-              <NavLink key={link.to} to={link.to} className={navLinkClass} end={link.to === '/'}>
+              <ScrollLink key={link.id} to={`/#${link.id}`} className={navLinkClass(isHome && activeId === link.id)}>
                 {link.label}
-              </NavLink>
+              </ScrollLink>
             ))}
-            <NavLink to="/contact" className="btn-primary ml-2 !px-5 !py-2 text-sm">
+            <ScrollLink to="/#contact" className="btn-primary ml-2 !px-5 !py-2 text-sm">
               Contact
-            </NavLink>
+            </ScrollLink>
           </nav>
 
           <button
@@ -79,36 +126,37 @@ function App() {
         {menuOpen && (
           <nav id="mobile-nav" className="flex flex-col gap-1 border-t border-edge px-6 py-4 md:hidden">
             {navLinks.map(link => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className={navLinkClass}
-                end={link.to === '/'}
-                onClick={() => setMenuOpen(false)}
+              <ScrollLink
+                key={link.id}
+                to={`/#${link.id}`}
+                className={navLinkClass(isHome && activeId === link.id)}
+                onNavigate={() => setMenuOpen(false)}
               >
                 {link.label}
-              </NavLink>
+              </ScrollLink>
             ))}
-            <NavLink
-              to="/contact"
-              onClick={() => setMenuOpen(false)}
+            <ScrollLink
+              to="/#contact"
+              onNavigate={() => setMenuOpen(false)}
               className="btn-primary mt-1 w-fit !px-5 !py-2 text-sm"
             >
               Contact
-            </NavLink>
+            </ScrollLink>
           </nav>
         )}
       </header>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-12 sm:px-10">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-6 sm:px-10">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/experience" element={<Experience />} />
-          <Route path="/skills" element={<Skills />} />
-          <Route path="/certifications" element={<Certifications />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/projects/:id" element={<ProjectDetail />} />
+          <Route path="/" element={<OnePageContent />} />
+          <Route
+            path="/projects/:id"
+            element={
+              <div className="py-12">
+                <ProjectDetail />
+              </div>
+            }
+          />
         </Routes>
       </main>
 

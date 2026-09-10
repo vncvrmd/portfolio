@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import ScrollLink from '../components/ScrollLink'
 import { apiUrl } from '../api'
 import { certifications } from './Certifications'
 import { skillGroups } from './Skills'
@@ -14,9 +14,9 @@ interface Project {
 }
 
 const highlights = [
-  { to: '/experience', title: 'Experience', description: 'Internships, leadership roles, and education.' },
-  { to: '/skills', title: 'Skills', description: 'Salesforce, full-stack development, and QA.' },
-  { to: '/certifications', title: 'Certifications', description: 'Credentials and academic honors.' }
+  { to: '/#experience', title: 'Experience', description: 'Internships, leadership roles, and education.' },
+  { to: '/#skills', title: 'Skills', description: 'Salesforce, full-stack development, and QA.' },
+  { to: '/#certifications', title: 'Certifications', description: 'Credentials and academic honors.' }
 ]
 
 export default function Home() {
@@ -84,12 +84,12 @@ export default function Home() {
           )}
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/projects" className="btn-primary">
+            <ScrollLink to="/#projects" className="btn-primary">
               View projects
-            </Link>
-            <Link to="/contact" className="btn-outline">
+            </ScrollLink>
+            <ScrollLink to="/#contact" className="btn-outline">
               Contact
-            </Link>
+            </ScrollLink>
           </div>
         </div>
 
@@ -137,10 +137,10 @@ export default function Home() {
         <h2 className="mb-6 font-heading text-2xl font-semibold text-ink">Quick links</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           {highlights.map(item => (
-            <Link key={item.to} to={item.to} className="card block">
+            <ScrollLink key={item.to} to={item.to} className="card block">
               <h3 className="font-heading font-semibold text-ink">{item.title}</h3>
               <p className="mt-2 text-sm text-body">{item.description}</p>
-            </Link>
+            </ScrollLink>
           ))}
         </div>
       </section>

@@ -57,7 +57,7 @@ export default function ProjectDetail() {
           <button type="button" onClick={() => setRetryCount(c => c + 1)} className="btn-outline w-fit">
             Try again
           </button>
-          <Link to="/projects" className="btn-outline w-fit">
+          <Link to="/#projects" className="btn-outline w-fit">
             ← Back to projects
           </Link>
         </div>
@@ -69,7 +69,7 @@ export default function ProjectDetail() {
     return (
       <div className="section space-y-4">
         <p className="text-body">Project not found.</p>
-        <Link to="/projects" className="btn-outline w-fit">
+        <Link to="/#projects" className="btn-outline w-fit">
           ← Back to projects
         </Link>
       </div>
@@ -80,7 +80,7 @@ export default function ProjectDetail() {
     <section className="section !p-0 overflow-hidden">
       <div className="p-6 sm:p-8">
         <Link
-          to="/projects"
+          to="/#projects"
           className="cursor-pointer inline-block text-sm text-muted transition-colors duration-200 hover:text-accent2"
         >
           ← Back to projects
