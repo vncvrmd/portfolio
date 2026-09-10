@@ -1,3 +1,5 @@
+import Reveal from '../components/Reveal'
+
 interface Entry {
   title: string
   subtitle: string
@@ -64,11 +66,16 @@ function EntryCard({ entry }: { entry: Entry }) {
 function Group({ label, title, entries }: { label: string; title: string; entries: Entry[] }) {
   return (
     <section>
-      <span className="section-label">{label}</span>
-      <h2 className="mb-6 font-heading text-2xl font-bold text-ink">{title}</h2>
-      <div className="space-y-4">
-        {entries.map(entry => (
-          <EntryCard key={entry.title} entry={entry} />
+      <Reveal>
+        <span className="section-label">{label}</span>
+        <h2 className="mb-6 font-heading text-2xl font-bold text-ink">{title}</h2>
+      </Reveal>
+      <div className="space-y-4 border-l border-edge pl-6">
+        {entries.map((entry, index) => (
+          <Reveal key={entry.title} delay={Math.min(index * 80, 240)} className="relative">
+            <span className="absolute -left-[29px] top-6 h-2.5 w-2.5 rounded-full bg-accent2 ring-4 ring-surface" />
+            <EntryCard entry={entry} />
+          </Reveal>
         ))}
       </div>
     </section>

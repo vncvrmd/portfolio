@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { apiUrl } from '../api'
+import Reveal from '../components/Reveal'
 
 interface Project {
   id: number
@@ -17,7 +18,7 @@ function ProjectThumb({ project }: { project: Project }) {
       <img
         src={project.imageUrl}
         alt={`${project.title} preview`}
-        className="aspect-video w-full object-cover"
+        className="aspect-video w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         loading="lazy"
       />
     )
@@ -62,10 +63,10 @@ export default function ProjectsPage() {
 
   return (
     <div className="space-y-8">
-      <div>
+      <Reveal>
         <span className="section-label">Work</span>
         <h2 className="font-heading text-3xl font-bold text-ink">Projects</h2>
-      </div>
+      </Reveal>
 
       {isLoading && (
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
@@ -95,42 +96,46 @@ export default function ProjectsPage() {
 
       {!isLoading && !hasError && projects.length > 0 && (
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {projects.map(p => (
-            <article key={p.id} className="card flex flex-col overflow-hidden !p-0">
-              <div className="overflow-hidden rounded-t-2xl border-b border-edge">
-                <ProjectThumb project={p} />
-              </div>
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="font-heading font-semibold text-ink">{p.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-body">{p.description}</p>
-                {p.techStack && p.techStack.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {p.techStack.map(tech => (
-                      <span key={tech} className="pill-tag">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                <div className="mt-4 flex flex-col gap-2">
-                  {p.url && (
-                    <a href={p.url} target="_blank" rel="noreferrer" className="btn-primary w-full justify-center">
-                      Visit site ↗
-                    </a>
-                  )}
-                  <Link
-                    to={`/projects/${p.id}`}
-                    className={
-                      p.url
-                        ? 'btn-outline w-full justify-center !py-1.5 text-xs'
-                        : 'btn-outline w-fit self-end !px-4 !py-1.5 text-xs'
-                    }
-                  >
-                    Details
-                  </Link>
+          {projects.map((p, index) => (
+            <Reveal key={p.id} delay={Math.min(index * 80, 240)} className="h-full">
+              <article className="card group flex h-full flex-col overflow-hidden !p-0">
+                <div className="overflow-hidden rounded-t-2xl border-b border-edge">
+                  <ProjectThumb project={p} />
                 </div>
-              </div>
-            </article>
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="font-heading font-semibold text-ink">{p.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-body">{p.description}</p>
+                  {p.techStack && p.techStack.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {p.techStack.map(tech => (
+                        <span key={tech} className="pill-tag">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="mt-4 flex items-center gap-2 border-t border-edge pt-4 text-sm font-medium">
+                    {p.url && (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="cursor-pointer text-accent2 transition-colors duration-200 hover:text-ink"
+                      >
+                        Visit site ↗
+                      </a>
+                    )}
+                    {p.url && <span className="text-edge-strong">·</span>}
+                    <Link
+                      to={`/projects/${p.id}`}
+                      className="cursor-pointer text-muted transition-colors duration-200 hover:text-ink"
+                    >
+                      Details →
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       )}

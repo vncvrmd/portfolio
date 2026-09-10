@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { apiUrl } from '../api'
+import Reveal from '../components/Reveal'
 
 const contactMethods = [
   {
@@ -75,7 +76,7 @@ export default function ContactPage() {
 
   return (
     <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-      <div>
+      <Reveal>
         <span className="section-label">Get in touch</span>
         <h2 className="font-heading text-3xl font-bold text-ink">Contact</h2>
         <p className="mt-3 max-w-md text-body">Have an opportunity or question? Reach out through any of these.</p>
@@ -99,9 +100,9 @@ export default function ContactPage() {
             </a>
           ))}
         </div>
-      </div>
+      </Reveal>
 
-      <section className="section">
+      <Reveal delay={120} className="section">
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -174,7 +175,7 @@ export default function ContactPage() {
             </p>
           )}
         </form>
-      </section>
+      </Reveal>
     </div>
   )
 }

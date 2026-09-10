@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import ScrollLink from '../components/ScrollLink'
+import Reveal from '../components/Reveal'
 import { apiUrl } from '../api'
 import { certifications } from './Certifications'
 import { skillGroups } from './Skills'
@@ -123,24 +124,30 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="grid grid-cols-3 divide-x divide-edge border-y border-edge py-8">
-        {stats.map(stat => (
-          <div key={stat.label} className="text-center">
-            <p className="font-heading text-3xl font-bold text-ink sm:text-4xl">{stat.value}</p>
-            <p className="mt-1 text-xs uppercase tracking-[0.1em] text-muted">{stat.label}</p>
-          </div>
-        ))}
-      </section>
+      <Reveal>
+        <section className="grid grid-cols-3 divide-x divide-edge border-y border-edge py-8">
+          {stats.map(stat => (
+            <div key={stat.label} className="text-center">
+              <p className="font-heading text-3xl font-bold text-ink sm:text-4xl">{stat.value}</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.1em] text-muted">{stat.label}</p>
+            </div>
+          ))}
+        </section>
+      </Reveal>
 
       <section>
-        <span className="section-label">Explore</span>
-        <h2 className="mb-6 font-heading text-2xl font-semibold text-ink">Quick links</h2>
+        <Reveal>
+          <span className="section-label">Explore</span>
+          <h2 className="mb-6 font-heading text-2xl font-semibold text-ink">Quick links</h2>
+        </Reveal>
         <div className="grid gap-4 sm:grid-cols-3">
-          {highlights.map(item => (
-            <ScrollLink key={item.to} to={item.to} className="card block">
-              <h3 className="font-heading font-semibold text-ink">{item.title}</h3>
-              <p className="mt-2 text-sm text-body">{item.description}</p>
-            </ScrollLink>
+          {highlights.map((item, index) => (
+            <Reveal key={item.to} delay={Math.min(index * 80, 200)}>
+              <ScrollLink to={item.to} className="card block">
+                <h3 className="font-heading font-semibold text-ink">{item.title}</h3>
+                <p className="mt-2 text-sm text-body">{item.description}</p>
+              </ScrollLink>
+            </Reveal>
           ))}
         </div>
       </section>

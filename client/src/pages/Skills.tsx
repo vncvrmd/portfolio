@@ -1,3 +1,5 @@
+import Reveal from '../components/Reveal'
+
 interface SkillGroup {
   category: string
   items: string[]
@@ -71,25 +73,27 @@ export const skillGroups: SkillGroup[] = [
 export default function Skills() {
   return (
     <div className="space-y-6">
-      <div>
+      <Reveal>
         <span className="section-label">Toolbox</span>
         <h2 className="font-heading text-3xl font-bold text-ink">Skills</h2>
-      </div>
+      </Reveal>
       <div className="grid gap-4 sm:grid-cols-2">
-        {skillGroups.map(group => (
-          <article key={group.category} className="card">
-            <h3 className="font-heading font-semibold text-ink">{group.category}</h3>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {group.items.map(item => (
-                <span key={item} className="pill-tag inline-flex items-center gap-1.5">
-                  {skillIcons[item] && (
-                    <img src={skillIcons[item]} alt="" aria-hidden="true" className="h-3.5 w-3.5" loading="lazy" />
-                  )}
-                  {item}
-                </span>
-              ))}
-            </div>
-          </article>
+        {skillGroups.map((group, index) => (
+          <Reveal key={group.category} delay={Math.min(index * 60, 240)}>
+            <article className="card">
+              <h3 className="font-heading font-semibold text-ink">{group.category}</h3>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {group.items.map(item => (
+                  <span key={item} className="pill-tag inline-flex items-center gap-1.5">
+                    {skillIcons[item] && (
+                      <img src={skillIcons[item]} alt="" aria-hidden="true" className="h-3.5 w-3.5" loading="lazy" />
+                    )}
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </article>
+          </Reveal>
         ))}
       </div>
     </div>
