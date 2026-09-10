@@ -3,6 +3,44 @@ interface SkillGroup {
   items: string[]
 }
 
+function simpleIcon(slug: string): string {
+  return `https://cdn.simpleicons.org/${slug}/a3e635`
+}
+
+// Brands not published on Simple Icons (Adobe, Microsoft, Salesforce, Canva, CapCut)
+// are pulled from Iconify's brand icon sets instead, tinted to match.
+function iconifyIcon(icon: string): string {
+  return `https://api.iconify.design/${icon}.svg?color=%23a3e635`
+}
+
+const skillIcons: Record<string, string> = {
+  React: simpleIcon('react'),
+  'Node.js': simpleIcon('nodedotjs'),
+  Express: simpleIcon('express'),
+  'Tailwind CSS': simpleIcon('tailwindcss'),
+  Vite: simpleIcon('vite'),
+  Swift: simpleIcon('swift'),
+  HTML: simpleIcon('html5'),
+  CSS: simpleIcon('css'),
+  JavaScript: simpleIcon('javascript'),
+  PHP: simpleIcon('php'),
+  MySQL: simpleIcon('mysql'),
+  Laravel: simpleIcon('laravel'),
+  Python: simpleIcon('python'),
+  Jest: simpleIcon('jest'),
+  Vitest: simpleIcon('vitest'),
+  'React Testing Library': simpleIcon('testinglibrary'),
+  Cypress: simpleIcon('cypress'),
+  Mocha: simpleIcon('mocha'),
+  Pantheon: simpleIcon('pantheon'),
+  Canva: iconifyIcon('cib:canva'),
+  CapCut: iconifyIcon('hugeicons:capcut'),
+  'Adobe Creative Cloud': iconifyIcon('cib:adobe-creative-cloud'),
+  'Microsoft Office': iconifyIcon('mdi:microsoft-office'),
+  'Google Workspace': iconifyIcon('cib:google'),
+  'Salesforce Flow': iconifyIcon('cib:salesforce')
+}
+
 export const skillGroups: SkillGroup[] = [
   {
     category: 'Salesforce & CRM',
@@ -43,7 +81,10 @@ export default function Skills() {
             <h3 className="font-heading font-semibold text-ink">{group.category}</h3>
             <div className="mt-3 flex flex-wrap gap-2">
               {group.items.map(item => (
-                <span key={item} className="pill-tag">
+                <span key={item} className="pill-tag inline-flex items-center gap-1.5">
+                  {skillIcons[item] && (
+                    <img src={skillIcons[item]} alt="" aria-hidden="true" className="h-3.5 w-3.5" loading="lazy" />
+                  )}
                   {item}
                 </span>
               ))}
