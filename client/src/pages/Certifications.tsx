@@ -4,7 +4,7 @@ interface Certification {
   url?: string
 }
 
-const certifications: Certification[] = [
+export const certifications: Certification[] = [
   {
     title: 'Information Technology Passport (IP) Certification Exam',
     detail: 'IP01-0169 · October 2025',

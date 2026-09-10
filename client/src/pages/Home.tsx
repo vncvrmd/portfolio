@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { apiUrl } from '../api'
+import { certifications } from './Certifications'
+import { skillGroups } from './Skills'
 
 interface About {
   headline: string
   details: string[]
+}
+
+interface Project {
+  id: number
 }
 
 const highlights = [
@@ -15,13 +21,25 @@ const highlights = [
 
 export default function Home() {
   const [about, setAbout] = useState<About | null>(null)
+  const [projectCount, setProjectCount] = useState<number | null>(null)
 
   useEffect(() => {
     fetch(apiUrl('/api/about'))
       .then(res => res.json())
       .then(data => setAbout(data.about))
       .catch(err => console.error(err))
+
+    fetch(apiUrl('/api/projects'))
+      .then(res => res.json())
+      .then(data => setProjectCount((data.projects as Project[]).length))
+      .catch(err => console.error(err))
   }, [])
+
+  const stats = [
+    { label: 'Projects', value: projectCount ?? '—' },
+    { label: 'Certifications', value: certifications.length },
+    { label: 'Skill areas', value: skillGroups.length }
+  ]
 
   return (
     <div className="space-y-16">
@@ -103,6 +121,15 @@ export default function Home() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section className="grid grid-cols-3 divide-x divide-edge border-y border-edge py-8">
+        {stats.map(stat => (
+          <div key={stat.label} className="text-center">
+            <p className="font-heading text-3xl font-bold text-ink sm:text-4xl">{stat.value}</p>
+            <p className="mt-1 text-xs uppercase tracking-[0.1em] text-muted">{stat.label}</p>
+          </div>
+        ))}
       </section>
 
       <section>

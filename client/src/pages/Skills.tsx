@@ -1,34 +1,32 @@
 interface SkillGroup {
   category: string
-  items: string
+  items: string[]
 }
 
-const skillGroups: SkillGroup[] = [
+export const skillGroups: SkillGroup[] = [
   {
     category: 'Salesforce & CRM',
-    items:
-      'Apex (classes, triggers, DML), SOQL/SOSL queries, Salesforce Flow (Screen, Record-Triggered, Scheduled, Autolaunched), and Schema modeling.'
+    items: ['Apex (classes, triggers, DML)', 'SOQL/SOSL queries', 'Salesforce Flow', 'Schema modeling']
   },
   {
     category: 'Web & Mobile Development',
-    items: 'React, Node.js, Express, Tailwind CSS, Vite, Swift, HTML, CSS, JavaScript, PHP, MySQL, Laravel, and Python.'
+    items: ['React', 'Node.js', 'Express', 'Tailwind CSS', 'Vite', 'Swift', 'HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL', 'Laravel', 'Python']
   },
   {
     category: 'Quality Assurance & Testing',
-    items:
-      'Unit testing (Jest, Vitest), Component testing (React Testing Library), E2E testing (Cypress), and backend/HTTP testing (Mocha, Supertest).'
+    items: ['Jest', 'Vitest', 'React Testing Library', 'Cypress', 'Mocha', 'Supertest']
   },
   {
     category: 'Leadership & Management',
-    items: 'Project management, strategic planning, documentation, and quality management.'
+    items: ['Project management', 'Strategic planning', 'Documentation', 'Quality management']
   },
   {
     category: 'Multimedia Production',
-    items: 'Photo and video editing using Canva, CapCut, and Adobe Creative Cloud.'
+    items: ['Canva', 'CapCut', 'Adobe Creative Cloud']
   },
   {
     category: 'Tools',
-    items: 'Microsoft Office, Google Workspace, and Pantheon.'
+    items: ['Microsoft Office', 'Google Workspace', 'Pantheon']
   }
 ]
 
@@ -43,7 +41,13 @@ export default function Skills() {
         {skillGroups.map(group => (
           <article key={group.category} className="card">
             <h3 className="font-heading font-semibold text-ink">{group.category}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-body">{group.items}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {group.items.map(item => (
+                <span key={item} className="pill-tag">
+                  {item}
+                </span>
+              ))}
+            </div>
           </article>
         ))}
       </div>
