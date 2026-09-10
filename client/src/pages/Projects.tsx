@@ -40,14 +40,25 @@ function ProjectThumb({ project }: { project: Project }) {
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
+    setIsLoading(true)
+    setHasError(false)
+
     fetch(apiUrl('/api/projects'))
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`Request failed with status ${res.status}`)
+        return res.json()
+      })
       .then(data => setProjects(data.projects))
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error(err)
+        setHasError(true)
+      })
       .finally(() => setIsLoading(false))
-  }, [])
+  }, [retryCount])
 
   return (
     <div className="space-y-8">
@@ -71,9 +82,18 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      {!isLoading && projects.length === 0 && <p className="text-muted">No projects to show right now.</p>}
+      {!isLoading && hasError && (
+        <div className="card flex flex-col items-start gap-3">
+          <p className="text-body">Couldn't load projects right now. The API may be waking up or temporarily unavailable.</p>
+          <button type="button" onClick={() => setRetryCount(c => c + 1)} className="btn-outline">
+            Try again
+          </button>
+        </div>
+      )}
 
-      {!isLoading && projects.length > 0 && (
+      {!isLoading && !hasError && projects.length === 0 && <p className="text-muted">No projects to show right now.</p>}
+
+      {!isLoading && !hasError && projects.length > 0 && (
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {projects.map(p => (
             <article key={p.id} className="card flex flex-col overflow-hidden !p-0">

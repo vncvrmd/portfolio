@@ -15,17 +15,27 @@ export default function ProjectDetail() {
   const { id } = useParams()
   const [project, setProject] = useState<Project | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
     setIsLoading(true)
+    setHasError(false)
     fetch(apiUrl('/api/projects'))
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`Request failed with status ${res.status}`)
+        return res.json()
+      })
       .then(data => {
         const found = data.projects.find((p: Project) => String(p.id) === String(id))
         setProject(found || null)
       })
+      .catch(err => {
+        console.error(err)
+        setHasError(true)
+      })
       .finally(() => setIsLoading(false))
-  }, [id])
+  }, [id, retryCount])
 
   if (isLoading) {
     return (
@@ -35,6 +45,22 @@ export default function ProjectDetail() {
         <div className="mt-5 h-6 w-1/2 rounded bg-surface-3" />
         <div className="mt-4 h-3 w-full rounded bg-surface-3" />
         <div className="mt-2 h-3 w-4/5 rounded bg-surface-3" />
+      </div>
+    )
+  }
+
+  if (hasError) {
+    return (
+      <div className="section space-y-4">
+        <p className="text-body">Couldn't load this project right now. The API may be waking up or temporarily unavailable.</p>
+        <div className="flex gap-3">
+          <button type="button" onClick={() => setRetryCount(c => c + 1)} className="btn-outline w-fit">
+            Try again
+          </button>
+          <Link to="/projects" className="btn-outline w-fit">
+            ← Back to projects
+          </Link>
+        </div>
       </div>
     )
   }
