@@ -33,7 +33,7 @@ public static class PortfolioData
         new Project(2, "LMD Dental Clinic", "Business Analyst — designed the website with an appointment booking system.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=LMD+Dental+Clinic"),
         new Project(3, "OBRA", "Full Stack Developer — developed a complete mobile application using Swift.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=OBRA", TechStack: new[] { "Swift" }),
         new Project(4, "UST RE-CYCLE", "Front-End Developer — built a mock web application for campus recycling.", "https://ust-re-cycle.vercel.app", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=UST+RE-CYCLE"),
-        new Project(5, "Panorama", "UI/UX Designer — created a web application with a focus on a strong user experience.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=Panorama"),
+        new Project(5, "Panorama", "UI/UX Designer — created a web application with a focus on a strong user experience.", "", ImageUrl: "/images/panorama.jpg"),
         new Project(6, "Falcon Eye", "Campus safety and lost & found web application for a school community, with account registration and sign-in.", "https://falcon-eye.vercel.app", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=Falcon+Eye", TechStack: new[] { "React" })
     };
 }
