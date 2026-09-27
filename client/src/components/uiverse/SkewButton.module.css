@@ -1,0 +1,47 @@
+/* Adapted from Uiverse.io by btongheng - https://uiverse.io/btongheng/blue-bobcat-63 (MIT).
+   Changes: CSS module, monochrome site tokens, shallower press, fluid width, hover lift, focus-visible ring, works on <a>. */
+.button {
+  --face: #fafafa;
+  --edge: #8b8b95;
+  --glow: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  min-width: 184px;
+  height: 48px;
+  padding: 0 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #09090b;
+  text-decoration: none;
+  background: var(--face);
+  border: 2px solid var(--edge);
+  border-radius: 0.75rem;
+  box-shadow: 0 5px 0 var(--edge);
+  transform: skew(-8deg);
+  transition: all 0.1s ease;
+  filter: drop-shadow(0 15px 20px var(--glow));
+}
+
+.button > * {
+  transform: skew(8deg);
+}
+
+.button:hover {
+  --face: #ffffff;
+}
+
+.button:active {
+  letter-spacing: 0;
+  transform: skew(-8deg) translateY(5px);
+  box-shadow: 0 0 0 var(--glow);
+}
+
+.button:focus-visible {
+  outline: 2px solid #a3e635;
+  outline-offset: 4px;
+}

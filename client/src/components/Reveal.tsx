@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { motion } from 'motion/react'
+import { useMotionPreference } from '../motionPreference'
 
 interface RevealProps {
   children: ReactNode
@@ -7,35 +9,20 @@ interface RevealProps {
 }
 
 export default function Reveal({ children, className = '', delay = 0 }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+  const { motionAllowed } = useMotionPreference()
 
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
+  // MotionConfig's reduced mode only skips transforms, so opacity/blur fades would still run.
+  if (!motionAllowed) return <div className={className}>{children}</div>
 
   return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out will-change-transform ${
-        visible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-      } ${className}`}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 24, filter: 'blur(6px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      viewport={{ once: true, amount: 0.15, margin: '0px 0px -10% 0px' }}
+      transition={{ duration: 0.7, ease: [0, 0, 0.2, 1], delay: delay / 1000 }}
     >
       {children}
-    </div>
+    </motion.div>
   )
 }

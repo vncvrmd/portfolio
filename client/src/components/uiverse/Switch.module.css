@@ -1,0 +1,57 @@
+/* Adapted from Uiverse.io by gharsh11032000 - https://uiverse.io/gharsh11032000/sour-vampirebat-66 (MIT).
+   Changes: CSS module, site tokens, focus-visible ring, sized via font-size. */
+.switch {
+  font-size: 11px;
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+  flex-shrink: 0;
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  border-radius: 50px;
+  background: #2f3548;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  left: 0.3em;
+  bottom: 0.3em;
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50px;
+  background: #8890a4;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.input:checked + .slider {
+  background: rgba(163, 230, 53, 0.25);
+}
+
+.input:checked + .slider::before {
+  transform: translateX(1.6em);
+  width: 2em;
+  height: 2em;
+  bottom: 0;
+  background: #a3e635;
+  box-shadow: 0 0 12px rgba(163, 230, 53, 0.7);
+}
+
+.input:focus-visible + .slider {
+  outline: 2px solid #7c6bf5;
+  outline-offset: 2px;
+}

@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 import ScrollLink from '../components/ScrollLink'
 import Reveal from '../components/Reveal'
+import SectionHeading from '../components/SectionHeading'
+import LandingHero from '../components/LandingHero'
+import Journey from '../components/journey/Journey'
+import { useMotionPreference } from '../motionPreference'
+import { useIntroDone } from '../components/Intro'
+import CountUp from '../components/reactbits/CountUp'
+import SpotlightCard from '../components/reactbits/SpotlightCard'
 import { apiUrl } from '../api'
 import { certifications } from './Certifications'
 import { skillGroups } from './Skills'
@@ -23,6 +30,8 @@ const highlights = [
 export default function Home() {
   const [about, setAbout] = useState<About | null>(null)
   const [projectCount, setProjectCount] = useState<number | null>(null)
+  const introDone = useIntroDone()
+  const { motionAllowed } = useMotionPreference()
 
   useEffect(() => {
     fetch(apiUrl('/api/about'))
@@ -37,115 +46,49 @@ export default function Home() {
   }, [])
 
   const stats = [
-    { label: 'Projects', value: projectCount ?? '—' },
+    { label: 'Projects', value: projectCount },
     { label: 'Certifications', value: certifications.length },
     { label: 'Skill areas', value: skillGroups.length }
   ]
 
+  // Journey mode: the whole home page is the journey (the start game sits on top until it's done).
+  if (motionAllowed) return introDone ? <Journey /> : <div className="min-h-[100svh]" />
+
   return (
-    <div className="space-y-16">
-      <section className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-        <div>
-          <span className="badge">
-            <span className="badge-dot" />
-            Open to opportunities
-          </span>
-
-          <h1 className="mt-5 font-heading text-4xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">
-            Building{' '}
-            <span className="relative whitespace-nowrap text-accent2">
-              modern, scalable
-              <svg
-                className="absolute -bottom-1 left-0 w-full"
-                height="8"
-                viewBox="0 0 200 8"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path d="M1 5.5C40 1.5 160 1.5 199 5.5" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" />
-              </svg>
-            </span>{' '}
-            web applications.
-          </h1>
-
-          <p className="mt-5 max-w-lg text-lg leading-relaxed text-body">
-            {about?.headline ??
-              'IT professional building modern, scalable web applications — from Salesforce automation to full-stack React and ASP.NET Core.'}
-          </p>
-
-          {about?.details && about.details.length > 0 && (
-            <ul className="mt-5 space-y-2">
-              {about.details.map(detail => (
-                <li key={detail} className="flex items-start gap-2.5 text-sm text-body">
-                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent2" />
-                  {detail}
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <ScrollLink to="/#projects" className="btn-primary">
-              View projects
-            </ScrollLink>
-            <ScrollLink to="/#contact" className="btn-outline">
-              Contact
-            </ScrollLink>
-          </div>
-        </div>
-
-        <div className="terminal">
-          <div className="terminal-bar">
-            <span className="terminal-dot bg-[#ec6a5e]" />
-            <span className="terminal-dot bg-[#f4be4f]" />
-            <span className="terminal-dot bg-[#61c554]" />
-            <span className="ml-2 text-xs text-faint">whoami.sh</span>
-          </div>
-          <div className="space-y-2.5 px-5 py-6 text-sm leading-relaxed">
-            <p className="text-body">
-              <span className="text-accent2">$</span> whoami
-            </p>
-            <p className="text-ink">IT graduate · full-stack &amp; Salesforce developer</p>
-            <p className="mt-4 text-body">
-              <span className="text-accent2">$</span> cat stack.txt
-            </p>
-            <p className="text-faint">
-              React · TypeScript · ASP.NET Core · C# · Apex · Tailwind CSS
-            </p>
-            <p className="mt-4 text-body">
-              <span className="text-accent2">$</span> ./deploy.sh --env production
-            </p>
-            <p className="text-ok">✓ build passed · deployed to Vercel + Render</p>
-            <p className="text-body">
-              <span className="text-accent2">$</span>{' '}
-              <span className="ml-0.5 inline-block h-4 w-2 animate-pulse bg-accent2 align-middle" />
-            </p>
-          </div>
-        </div>
-      </section>
+    <div className="space-y-20">
+      {introDone ? <LandingHero about={about} /> : <div className="min-h-[calc(100svh-9rem)]" />}
 
       <Reveal>
-        <section className="grid grid-cols-3 divide-x divide-edge border-y border-edge py-8">
+        <section className="grid grid-cols-3 divide-x divide-edge rounded-3xl border border-edge bg-panel/50 py-8 backdrop-blur-md">
           {stats.map(stat => (
             <div key={stat.label} className="text-center">
-              <p className="font-heading text-3xl font-bold text-ink sm:text-4xl">{stat.value}</p>
-              <p className="mt-1 text-xs uppercase tracking-[0.1em] text-muted">{stat.label}</p>
+              <p className="font-heading text-3xl font-bold text-ink sm:text-5xl">
+                {stat.value === null ? '—' : <CountUp to={stat.value} duration={1.6} />}
+              </p>
+              <p className="mt-2 text-xs uppercase tracking-[0.14em] text-muted">{stat.label}</p>
             </div>
           ))}
         </section>
       </Reveal>
 
       <section>
-        <Reveal>
-          <span className="section-label">Explore</span>
-          <h2 className="mb-6 font-heading text-2xl font-semibold text-ink">Quick links</h2>
-        </Reveal>
+        <SectionHeading label="Explore" title="Quick links" size="md" className="mb-6" />
         <div className="grid gap-4 sm:grid-cols-3">
           {highlights.map((item, index) => (
-            <Reveal key={item.to} delay={Math.min(index * 80, 200)}>
-              <ScrollLink to={item.to} className="card block">
-                <h3 className="font-heading font-semibold text-ink">{item.title}</h3>
-                <p className="mt-2 text-sm text-body">{item.description}</p>
+            <Reveal key={item.to} delay={Math.min(index * 80, 200)} className="h-full">
+              <ScrollLink to={item.to} className="group block h-full">
+                <SpotlightCard className="card h-full" spotlightColor="rgba(255, 255, 255, 0.06)">
+                  <h3 className="flex items-center justify-between font-heading font-semibold text-ink">
+                    {item.title}
+                    <span
+                      aria-hidden="true"
+                      className="text-muted transition-transform duration-300 group-hover:translate-x-1 group-hover:text-ink"
+                    >
+                      →
+                    </span>
+                  </h3>
+                  <p className="mt-2 text-sm text-body">{item.description}</p>
+                </SpotlightCard>
               </ScrollLink>
             </Reveal>
           ))}

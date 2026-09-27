@@ -77,8 +77,12 @@ export default function ContactPage() {
   return (
     <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
       <Reveal>
-        <span className="section-label">Get in touch</span>
-        <h2 className="font-heading text-3xl font-bold text-ink">Contact</h2>
+        <span className="mb-3 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-muted">
+          <span className="text-ink">05</span>
+          <span aria-hidden="true" className="h-px w-8 bg-edge-strong" />
+          Get in touch
+        </span>
+        <h2 className="font-heading text-4xl font-semibold tracking-tight text-ink sm:text-5xl">Let’s build something.</h2>
         <p className="mt-3 max-w-md text-body">Have an opportunity or question? Reach out through any of these.</p>
 
         <div className="mt-8 space-y-4">
@@ -88,9 +92,9 @@ export default function ContactPage() {
               href={method.href}
               target={method.href.startsWith('http') ? '_blank' : undefined}
               rel={method.href.startsWith('http') ? 'noreferrer' : undefined}
-              className="flex cursor-pointer items-center gap-4 rounded-2xl border border-edge bg-panel/60 p-4 transition-colors duration-200 hover:border-accent/60"
+              className="group flex cursor-pointer items-center gap-4 rounded-xl border border-edge bg-panel/60 p-4 transition-[border-color,transform] duration-300 hover:translate-x-1 hover:border-edge-strong"
             >
-              <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent2">
+              <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-edge bg-surface-2 text-ink transition-transform duration-300 group-hover:scale-105">
                 {method.icon}
               </span>
               <span>

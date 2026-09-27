@@ -1,4 +1,5 @@
 import Reveal from '../components/Reveal'
+import SectionHeading from '../components/SectionHeading'
 
 interface Certification {
   title: string
@@ -29,28 +30,32 @@ export const certifications: Certification[] = [
 
 export default function Certifications() {
   return (
-    <div className="space-y-6">
-      <Reveal>
-        <span className="section-label">Recognition</span>
-        <h2 className="font-heading text-3xl font-bold text-ink">Certifications</h2>
-      </Reveal>
-      <div className="grid gap-4 sm:grid-cols-2">
+    <div className="space-y-10">
+      <SectionHeading index={4} label="Recognition" title="Certifications" />
+      <div className="border-t border-edge">
         {certifications.map((cert, index) => (
           <Reveal key={cert.title} delay={Math.min(index * 60, 240)}>
-            <article className="card">
-              <h3 className="font-heading font-semibold text-ink">{cert.title}</h3>
-              {cert.detail && <p className="mt-2 text-sm font-medium text-accent2">{cert.detail}</p>}
-              {cert.url && (
+            <div className="group grid grid-cols-[3rem_1fr] items-baseline gap-x-4 gap-y-1 border-b border-edge py-6 transition-colors duration-300 hover:bg-white/[0.02] sm:grid-cols-[4rem_1fr_auto] sm:px-2">
+              <span className="font-mono text-sm text-faint transition-colors duration-300 group-hover:text-ink">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h3 className="font-heading text-lg font-medium text-ink sm:text-xl">{cert.title}</h3>
+                {cert.detail && <p className="mt-1 text-sm text-muted">{cert.detail}</p>}
+              </div>
+              {cert.url ? (
                 <a
                   href={cert.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-3 inline-block cursor-pointer text-sm font-medium text-accent2 transition-colors duration-200 hover:text-ink"
+                  className="col-start-2 mt-2 inline-flex w-fit cursor-pointer items-center gap-1.5 rounded-full border border-edge-strong px-4 py-1.5 text-xs font-medium text-body transition-colors duration-200 hover:border-ink/60 hover:text-ink sm:col-start-3 sm:mt-0"
                 >
-                  Verify ↗
+                  Verify <span aria-hidden="true">↗</span>
                 </a>
+              ) : (
+                <span className="hidden sm:block" />
               )}
-            </article>
+            </div>
           </Reveal>
         ))}
       </div>

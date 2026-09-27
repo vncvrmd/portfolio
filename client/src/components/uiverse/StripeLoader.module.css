@@ -1,0 +1,17 @@
+/* Adapted from Uiverse.io by JaydipPrajapati1910 - https://uiverse.io/JaydipPrajapati1910/curly-monkey-15 (MIT).
+   Changes: CSS module, scoped keyframes, lime token, fluid width. */
+.loader {
+  width: 100%;
+  max-width: 226px;
+  height: 14px;
+  background: repeating-linear-gradient(-45deg, #a3e635 0 12px, #0000 0 18px) left/200% 100%;
+  animation: stripes 2s infinite linear;
+  border-radius: 999px;
+  border: 1px solid rgba(163, 230, 53, 0.6);
+}
+
+@keyframes stripes {
+  100% {
+    background-position: right;
+  }
+}

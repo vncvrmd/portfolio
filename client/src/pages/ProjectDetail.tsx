@@ -81,7 +81,7 @@ export default function ProjectDetail() {
       <div className="p-6 sm:p-8">
         <Link
           to="/#projects"
-          className="cursor-pointer inline-block text-sm text-muted transition-colors duration-200 hover:text-accent2"
+          className="cursor-pointer inline-block text-sm text-muted transition-colors duration-200 hover:text-ink"
         >
           ← Back to projects
         </Link>

@@ -10,17 +10,29 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis drives scrolling itself; native smooth scrolling would double-ease it. */
+@media (hover: none) {
+  .glass-nav,
+  .terminal {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .glass-nav {
+    background-color: rgba(9, 9, 11, 0.94);
+  }
+}
+
+html.lenis {
+  scroll-behavior: auto;
+}
+
 body {
   margin: 0;
+  overflow-x: clip;
   min-height: 100vh;
   color: theme('colors.body');
   background-color: theme('colors.surface');
-  background-image:
-    radial-gradient(900px 520px at 88% -8%, rgba(124, 107, 245, 0.14), transparent 62%),
-    radial-gradient(720px 460px at -6% 4%, rgba(163, 230, 53, 0.07), transparent 58%),
-    radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 22px 22px;
-  background-attachment: fixed, fixed, fixed;
   font-family: 'DM Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -47,7 +59,7 @@ pre {
 }
 
 ::selection {
-  background: rgba(124, 107, 245, 0.35);
+  background: rgba(250, 250, 250, 0.2);
 }
 
 @layer base {
@@ -64,25 +76,172 @@ pre {
   input:focus-visible,
   textarea:focus-visible,
   [tabindex]:focus-visible {
-    outline: 2px solid theme('colors.accent');
+    outline: 2px solid theme('colors.ink');
   }
 }
 
 @layer components {
+  /* Static backdrop: near-black with one soft purple wash. Also the fallback when WebGL is off. */
+  .backdrop-static {
+    background-color: theme('colors.surface');
+    background-image: radial-gradient(1100px 600px at 70% -10%, rgba(124, 107, 245, 0.12), transparent 65%);
+  }
+
+  /* Keeps text contrast over the shader and fades it into the page below the hero. */
+  .backdrop-scrim {
+    background-image: linear-gradient(to bottom, rgba(9, 9, 11, 0.35), rgba(9, 9, 11, 0.75) 60%, rgba(9, 9, 11, 0.95));
+  }
+
+  /* Faint grid behind the Experience timeline, fading out toward the edges. */
+  .experience-grid::before {
+    content: '';
+    position: absolute;
+    inset: -3rem -2rem;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 72%);
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 72%);
+  }
+
+  /* Journey layout knobs per breakpoint (see the mobile spec): ground height, prop/sprite scale, scroll per scene. */
+  .journey-root {
+    --ground: 18svh;
+    --scene-scale: 1;
+    --sprite-scale: 1;
+    --scene-scroll: 110vh;
+  }
+
+  .journey-prop {
+    scale: var(--scene-scale);
+    transform-origin: bottom left;
+  }
+
+  .journey-sprite {
+    scale: var(--sprite-scale);
+    transform-origin: bottom center;
+  }
+
+  @media (max-width: 639px) and (orientation: portrait) {
+    .journey-root {
+      --ground: 34svh;
+      --scene-scale: 0.72;
+      --sprite-scale: 0.85;
+      --scene-scroll: 85svh;
+    }
+
+    /* Story card becomes a bottom sheet sitting on the ground, clear of the props above. */
+    .journey-card {
+      top: auto !important;
+      left: 0.75rem !important;
+      right: 0.75rem;
+      width: auto !important;
+      bottom: calc(env(safe-area-inset-bottom) + 3.25rem);
+      max-height: calc(var(--ground) - 4rem);
+      overflow: hidden;
+      padding: 1rem !important;
+    }
+
+    .journey-card h2 {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 639px) and (max-height: 620px) and (orientation: portrait) {
+    .journey-root {
+      --scene-scale: 0.62;
+      --sprite-scale: 0.7;
+    }
+  }
+
+  @media (orientation: landscape) and (max-height: 500px) {
+    .journey-root {
+      --ground: 20svh;
+      --scene-scale: 0.58;
+      --sprite-scale: 0.7;
+      --scene-scroll: max(110svh, 420px);
+    }
+
+    .journey-card {
+      top: 4.5rem !important;
+      width: min(340px, 42vw) !important;
+      padding: 0.875rem !important;
+    }
+
+    .journey-card h2 {
+      font-size: 1.125rem;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .journey-root {
+      --ground: 20svh;
+      --scene-scale: 1.1;
+      --scene-scroll: 100svh;
+    }
+  }
+
+  /* Journey (interactive résumé) layers */
+  .journey-stars {
+    background-image:
+      radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
+      radial-gradient(2px 2px at 140px 80px, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 260px 40px, rgba(255, 255, 255, 0.7), transparent),
+      radial-gradient(2px 2px at 330px 140px, rgba(255, 255, 255, 0.45), transparent);
+    background-size: 360px 220px;
+  }
+
+  .journey-hills {
+    background-image:
+      radial-gradient(ellipse 260px 150px at 130px 100%, rgba(9, 9, 11, 0.5) 98%, transparent 100%),
+      radial-gradient(ellipse 200px 110px at 380px 100%, rgba(9, 9, 11, 0.38) 98%, transparent 100%);
+    background-size: 520px 100%;
+    background-repeat: repeat-x;
+  }
+
+  .journey-ground {
+    background:
+      linear-gradient(#a3e635, #a3e635) top / 100% 8px no-repeat,
+      linear-gradient(#65a30d, #65a30d) 0 8px / 100% 4px no-repeat,
+      repeating-linear-gradient(90deg, #3f2a14 0 48px, #4a3218 48px 96px);
+    border-top: 3px solid #09090b;
+  }
+
+  .nav-underline::after {
+    content: '';
+    @apply absolute bottom-1 left-3 right-3 h-px origin-left scale-x-0 bg-ink transition-transform duration-300 ease-out;
+  }
+
+  .nav-underline:hover::after {
+    @apply scale-x-100;
+  }
+
+  .section-divider {
+    @apply relative;
+  }
+
+  .section-divider::before {
+    content: '';
+    @apply absolute inset-x-0 top-0 h-px bg-edge;
+  }
+
   .glass-nav {
-    @apply sticky top-0 z-50 border-b border-edge bg-surface/80 backdrop-blur-md;
+    @apply sticky top-0 z-50 border-b border-edge/80 bg-surface/70 backdrop-blur-xl;
   }
 
   .btn {
-    @apply inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200;
+    @apply inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-200;
   }
 
   .btn-primary {
-    @apply btn bg-accent text-white shadow-[0_8px_24px_-12px_rgba(124,107,245,0.65)] hover:bg-accent-strong;
+    @apply btn bg-ink text-surface hover:bg-white/85;
   }
 
   .btn-outline {
-    @apply btn border border-edge-strong text-ink hover:border-accent hover:text-accent;
+    @apply btn border border-edge-strong text-ink hover:border-ink/60;
   }
 
   .btn-ghost {
@@ -90,7 +249,7 @@ pre {
   }
 
   .badge {
-    @apply inline-flex items-center gap-2 rounded-full border border-edge-strong bg-panel px-3.5 py-1 text-xs text-muted;
+    @apply inline-flex items-center gap-2 rounded-full border border-edge px-3 py-1 text-xs text-muted;
   }
 
   .badge-dot {
@@ -98,57 +257,56 @@ pre {
   }
 
   .card {
-    @apply rounded-2xl border border-edge bg-panel/80 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-[0_16px_40px_-24px_rgba(124,107,245,0.45)];
+    @apply rounded-xl border border-edge bg-panel/60 p-6 transition-colors duration-300 hover:border-edge-strong;
   }
 
   .section {
-    @apply rounded-3xl border border-edge bg-panel/60 p-6 shadow-[0_24px_60px_-40px_rgba(0,0,0,0.7)] sm:p-8;
+    @apply rounded-2xl border border-edge bg-panel/60 p-6 sm:p-8;
   }
 
   .section-label {
-    @apply mb-2 inline-block text-xs font-semibold uppercase tracking-[0.14em] text-accent2;
+    @apply mb-2 inline-block font-mono text-xs uppercase tracking-[0.2em] text-muted;
   }
 
   .field-label {
-    @apply mb-1 block text-sm text-muted;
+    @apply mb-1.5 block text-xs uppercase tracking-[0.14em] text-muted;
   }
 
   .field-input {
-    @apply w-full rounded-2xl border border-edge bg-surface-2 px-4 py-3 text-ink placeholder:text-faint transition-colors duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25;
+    @apply w-full rounded-lg border border-edge bg-surface-2 px-4 py-3 text-ink placeholder:text-faint transition-colors duration-200 focus:border-ink/50 focus:outline-none;
   }
 
   .pill-tag {
-    @apply rounded-full border border-edge-strong bg-surface-3 px-3 py-1 text-xs text-body;
+    @apply rounded-md border border-edge bg-surface-2 px-2.5 py-1 text-xs text-body;
   }
 
   .status-toast {
-    @apply flex items-center gap-2 rounded-xl border border-ok/30 bg-ok/10 px-4 py-2.5 text-sm font-medium text-ok;
+    @apply flex items-center gap-2 rounded-lg border border-ok/30 bg-ok/10 px-4 py-2.5 text-sm font-medium text-ok;
   }
 
   .terminal {
-    @apply overflow-hidden rounded-2xl border border-edge-strong bg-surface-2 font-mono shadow-[0_24px_60px_-26px_rgba(0,0,0,0.8)];
+    @apply overflow-hidden rounded-xl border border-edge-strong bg-surface-2/90 font-mono backdrop-blur-xl;
   }
 
   .terminal-bar {
-    @apply flex items-center gap-2 border-b border-white/5 bg-white/[0.02] px-4 py-3;
+    @apply flex items-center gap-2 border-b border-edge px-4 py-3;
   }
 
   .terminal-dot {
-    @apply h-2.5 w-2.5 rounded-full;
+    @apply h-2.5 w-2.5 rounded-full bg-edge-strong;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+/* Toggled by MotionPreferenceProvider: follows the OS setting unless the visitor overrides it. */
+html.reduce-motion {
+  scroll-behavior: auto;
+}
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
 }

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { apiUrl } from '../api'
 import Reveal from '../components/Reveal'
+import SectionHeading from '../components/SectionHeading'
+import SpotlightCard from '../components/reactbits/SpotlightCard'
 
 interface Project {
   id: number
@@ -18,7 +20,7 @@ function ProjectThumb({ project }: { project: Project }) {
       <img
         src={project.imageUrl}
         alt={`${project.title} preview`}
-        className="aspect-video w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+        className="aspect-video w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
         loading="lazy"
       />
     )
@@ -63,10 +65,7 @@ export default function ProjectsPage() {
 
   return (
     <div className="space-y-8">
-      <Reveal>
-        <span className="section-label">Work</span>
-        <h2 className="font-heading text-3xl font-bold text-ink">Projects</h2>
-      </Reveal>
+      <SectionHeading index={1} label="Selected work" title="Projects" />
 
       {isLoading && (
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
@@ -98,12 +97,15 @@ export default function ProjectsPage() {
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {projects.map((p, index) => (
             <Reveal key={p.id} delay={Math.min(index * 80, 240)} className="h-full">
-              <article className="card group flex h-full flex-col overflow-hidden !p-0">
-                <div className="overflow-hidden rounded-t-2xl border-b border-edge">
+              <SpotlightCard className="card group flex h-full flex-col !p-0" spotlightColor="rgba(255, 255, 255, 0.06)">
+                <div className="relative overflow-hidden rounded-t-2xl border-b border-edge">
                   <ProjectThumb project={p} />
+                  <span className="absolute left-3 top-3 rounded-full border border-white/10 bg-surface/80 px-2.5 py-1 font-mono text-[11px] text-ink backdrop-blur-sm">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
                 </div>
                 <div className="flex flex-1 flex-col p-5">
-                  <h3 className="font-heading font-semibold text-ink">{p.title}</h3>
+                  <h3 className="font-heading text-lg font-semibold text-ink transition-colors duration-200 group-hover:text-body">{p.title}</h3>
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-body">{p.description}</p>
                   {p.techStack && p.techStack.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-2">
@@ -120,7 +122,7 @@ export default function ProjectsPage() {
                         href={p.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="cursor-pointer text-accent2 transition-colors duration-200 hover:text-ink"
+                        className="cursor-pointer text-ink transition-colors duration-200 hover:text-muted"
                       >
                         Visit site ↗
                       </a>
@@ -134,7 +136,7 @@ export default function ProjectsPage() {
                     </Link>
                   </div>
                 </div>
-              </article>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>

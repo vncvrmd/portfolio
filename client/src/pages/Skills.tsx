@@ -1,4 +1,6 @@
 import Reveal from '../components/Reveal'
+import SectionHeading from '../components/SectionHeading'
+import SpotlightCard from '../components/reactbits/SpotlightCard'
 
 interface SkillGroup {
   category: string
@@ -6,13 +8,13 @@ interface SkillGroup {
 }
 
 function simpleIcon(slug: string): string {
-  return `https://cdn.simpleicons.org/${slug}/a3e635`
+  return `https://cdn.simpleicons.org/${slug}/b8b8c1`
 }
 
 // Brands not published on Simple Icons (Adobe, Microsoft, Salesforce, Canva, CapCut)
 // are pulled from Iconify's brand icon sets instead, tinted to match.
 function iconifyIcon(icon: string): string {
-  return `https://api.iconify.design/${icon}.svg?color=%23a3e635`
+  return `https://api.iconify.design/${icon}.svg?color=%23b8b8c1`
 }
 
 const skillIcons: Record<string, string> = {
@@ -73,18 +75,15 @@ export const skillGroups: SkillGroup[] = [
 export default function Skills() {
   return (
     <div className="space-y-6">
-      <Reveal>
-        <span className="section-label">Toolbox</span>
-        <h2 className="font-heading text-3xl font-bold text-ink">Skills</h2>
-      </Reveal>
+      <SectionHeading index={3} label="Toolbox" title="Skills" />
       <div className="grid gap-4 sm:grid-cols-2">
         {skillGroups.map((group, index) => (
-          <Reveal key={group.category} delay={Math.min(index * 60, 240)}>
-            <article className="card">
+          <Reveal key={group.category} delay={Math.min(index * 60, 240)} className="h-full">
+            <SpotlightCard className="card h-full" spotlightColor="rgba(255, 255, 255, 0.06)">
               <h3 className="font-heading font-semibold text-ink">{group.category}</h3>
               <div className="mt-3 flex flex-wrap gap-2">
                 {group.items.map(item => (
-                  <span key={item} className="pill-tag inline-flex items-center gap-1.5">
+                  <span key={item} className="pill-tag inline-flex items-center gap-1.5 transition-colors duration-200 hover:border-edge-strong hover:text-ink">
                     {skillIcons[item] && (
                       <img src={skillIcons[item]} alt="" aria-hidden="true" className="h-3.5 w-3.5" loading="lazy" />
                     )}
@@ -92,7 +91,7 @@ export default function Skills() {
                   </span>
                 ))}
               </div>
-            </article>
+            </SpotlightCard>
           </Reveal>
         ))}
       </div>

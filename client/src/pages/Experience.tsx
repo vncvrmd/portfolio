@@ -1,13 +1,20 @@
-import Reveal from '../components/Reveal'
+import { useLayoutEffect, useRef, useState } from 'react'
+import { motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react'
+import SectionHeading from '../components/SectionHeading'
+import { useMotionPreference } from '../motionPreference'
+
+type Kind = 'Career' | 'Campus' | 'Academics'
 
 interface Entry {
+  kind: Kind
   title: string
   subtitle: string
   bullets: string[]
 }
 
-const professionalExperience: Entry[] = [
+const entries: Entry[] = [
   {
+    kind: 'Career',
     title: 'Internship, Accenture, Inc. (Salesforce Capability)',
     subtitle: 'Dec 2025 – May 2026',
     bullets: [
@@ -16,16 +23,15 @@ const professionalExperience: Entry[] = [
       'Designed complex relational data models, including custom objects, lookup and master-detail relationships, and managed system security through profiles, permission sets, and OWD configurations.',
       'Performed data migration and integrity management using Data Import Wizard and Data Loader, while building custom reports and dashboards for organizational data analysis.'
     ]
-  }
-]
-
-const leadershipExperience: Entry[] = [
+  },
   {
+    kind: 'Campus',
     title: 'Samsung Galaxy Campus Ambassador (Batch 3)',
     subtitle: '2025–2026',
     bullets: ['Selected as one of only 50 students nationwide to drive brand advocacy and execute strategic engagement missions.']
   },
   {
+    kind: 'Campus',
     title: 'Chief-of-Staff / VP for Quality Management & Assurance',
     subtitle: '2023 – 2026',
     bullets: [
@@ -34,60 +40,217 @@ const leadershipExperience: Entry[] = [
     ]
   },
   {
+    kind: 'Campus',
     title: 'Project Head & Lead Organizer',
     subtitle: 'Various Dates',
     bullets: ['Directed major university events including Crank IT, Build IT 2023 and UST Paskuhan 2024 (Lead Organizer & Documentation Head).']
+  },
+  {
+    kind: 'Academics',
+    title: 'Bachelor of Science in Information Technology',
+    subtitle: 'Major in Web and Mobile Application Development · University of Santo Tomas · August 2022 – June 2026',
+    bullets: ['Cum Laude']
   }
 ]
 
-const education: Entry = {
-  title: 'Bachelor of Science in Information Technology',
-  subtitle: 'Major in Web and Mobile Application Development · University of Santo Tomas · August 2022 – June 2026',
-  bullets: ['Cum Laude']
+const kindStyle: Record<Kind, { dot: string; text: string }> = {
+  Career: { dot: '#a3e635', text: 'text-accent2' },
+  Campus: { dot: '#7c6bf5', text: 'text-accent' },
+  Academics: { dot: '#f4f6fb', text: 'text-ink' }
 }
 
-function EntryCard({ entry }: { entry: Entry }) {
+interface Stop {
+  x: number
+  y: number
+  at: number // 0–1 position along the path
+}
+
+interface Geometry {
+  width: number
+  height: number
+  d: string
+  stops: Stop[]
+}
+
+const DOT_OFFSET = 30 // px from the card's top edge to its milestone dot
+const SWING = 44 // how far the line bends toward each card on desktop
+
+// Builds the winding line from the measured card positions and records where each milestone
+// falls along its length, so dots and cards light up exactly when the line reaches them.
+function buildGeometry(container: HTMLElement, cards: HTMLElement[], desktop: boolean): Geometry {
+  const width = container.offsetWidth
+  const height = container.offsetHeight
+  const spineX = desktop ? width / 2 : 12
+  const anchors = cards.map((card, i) => ({
+    x: desktop ? spineX + (i % 2 === 0 ? -SWING : SWING) : spineX,
+    y: card.offsetTop + DOT_OFFSET
+  }))
+
+  const measurer = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+  let d = `M ${spineX} 0`
+  const stops: Stop[] = []
+  let prev = { x: spineX, y: 0 }
+  const lengths: number[] = []
+
+  for (const a of anchors) {
+    const midY = (prev.y + a.y) / 2
+    d += desktop ? ` C ${prev.x} ${midY}, ${a.x} ${midY}, ${a.x} ${a.y}` : ` L ${a.x} ${a.y}`
+    measurer.setAttribute('d', d)
+    lengths.push(measurer.getTotalLength())
+    stops.push({ x: a.x, y: a.y, at: 0 })
+    prev = a
+  }
+  const endY = height
+  const midY = (prev.y + endY) / 2
+  d += desktop ? ` C ${prev.x} ${midY}, ${spineX} ${midY}, ${spineX} ${endY}` : ` L ${spineX} ${endY}`
+  measurer.setAttribute('d', d)
+  const total = measurer.getTotalLength() || 1
+  stops.forEach((s, i) => (s.at = lengths[i] / total))
+
+  return { width, height, d, stops }
+}
+
+function Milestone({ stop, color, draw }: { stop: Stop; color: string; draw: MotionValue<number> }) {
+  const scale = useTransform(draw, [stop.at - 0.015, stop.at + 0.01], [0, 1])
+  const pop = useSpring(scale, { stiffness: 400, damping: 12 })
   return (
-    <article className="card">
-      <h3 className="font-heading font-semibold text-ink">{entry.title}</h3>
-      <p className="mt-1 text-sm font-medium text-accent2">{entry.subtitle}</p>
-      <ul className="mt-3 space-y-2 text-body">
+    <motion.g style={{ scale: pop, originX: '50%', originY: '50%' }}>
+      <circle cx={stop.x} cy={stop.y} r={9} fill={color} opacity={0.12} />
+      <circle cx={stop.x} cy={stop.y} r={4} fill={color} stroke="#09090b" strokeWidth={2.5} />
+    </motion.g>
+  )
+}
+
+function TimelineCard({
+  entry,
+  index,
+  stop,
+  draw,
+  desktop,
+  cardRef
+}: {
+  entry: Entry
+  index: number
+  stop?: Stop
+  draw: MotionValue<number>
+  desktop: boolean
+  cardRef: (el: HTMLElement | null) => void
+}) {
+  const at = stop?.at ?? 0
+  const side = desktop && index % 2 === 1 ? 1 : -1
+  const opacity = useTransform(draw, [at - 0.05, at], [0.2, 1])
+  const x = useTransform(draw, [at - 0.05, at], [desktop ? side * -28 : 16, 0])
+  const style = kindStyle[entry.kind]
+
+  return (
+    <motion.article
+      ref={cardRef}
+      style={{ opacity, x }}
+      className={`relative rounded-xl border border-edge bg-panel/80 p-6 md:w-[calc(50%-4.5rem)] ${
+        index % 2 === 1 ? 'md:ml-auto' : ''
+      } ${index > 0 ? 'md:-mt-10' : ''}`}
+    >
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs">
+        <span className={`uppercase tracking-[0.18em] ${style.text}`}>{entry.kind}</span>
+        <span className="text-faint">/</span>
+        <span className="text-muted">{entry.subtitle}</span>
+      </div>
+      <h3 className="mt-3 font-heading text-lg font-semibold leading-snug text-ink">{entry.title}</h3>
+      <ul className="mt-3 space-y-2 text-sm leading-relaxed text-body">
         {entry.bullets.map(bullet => (
           <li key={bullet} className="flex items-start gap-2.5">
-            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-edge-strong" />
+            <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-edge-strong" />
             <span>{bullet}</span>
           </li>
         ))}
       </ul>
-    </article>
-  )
-}
-
-function Group({ label, title, entries }: { label: string; title: string; entries: Entry[] }) {
-  return (
-    <section>
-      <Reveal>
-        <span className="section-label">{label}</span>
-        <h2 className="mb-6 font-heading text-2xl font-bold text-ink">{title}</h2>
-      </Reveal>
-      <div className="space-y-4 border-l border-edge pl-6">
-        {entries.map((entry, index) => (
-          <Reveal key={entry.title} delay={Math.min(index * 80, 240)} className="relative">
-            <span className="absolute -left-[29px] top-6 h-2.5 w-2.5 rounded-full bg-accent2 ring-4 ring-surface" />
-            <EntryCard entry={entry} />
-          </Reveal>
-        ))}
-      </div>
-    </section>
+    </motion.article>
   )
 }
 
 export default function Experience() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const cardEls = useRef<(HTMLElement | null)[]>([])
+  const [geometry, setGeometry] = useState<Geometry | null>(null)
+  const [desktop, setDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches)
+  const { motionAllowed } = useMotionPreference()
+
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start 75%', 'end 65%'] })
+  // The spring makes the line trail the scrollbar slightly instead of snapping to it.
+  const trailing = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.0005 })
+  const fullyDrawn = useMotionValue(1)
+  const draw = motionAllowed ? trailing : fullyDrawn
+
+  useLayoutEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+    const mql = window.matchMedia('(min-width: 768px)')
+
+    const measure = () => {
+      const cards = cardEls.current.filter((el): el is HTMLElement => el !== null)
+      setDesktop(mql.matches)
+      setGeometry(buildGeometry(container, cards, mql.matches))
+    }
+
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(container)
+    mql.addEventListener('change', measure)
+    return () => {
+      observer.disconnect()
+      mql.removeEventListener('change', measure)
+    }
+  }, [])
+
   return (
-    <div className="space-y-12">
-      <Group label="Career" title="Professional Experience" entries={professionalExperience} />
-      <Group label="Campus" title="Leadership & University Experience" entries={leadershipExperience} />
-      <Group label="Academics" title="Education" entries={[education]} />
+    <div className="experience-grid relative">
+      <SectionHeading index={2} label="Journey" title="Experience" className="mb-14" />
+
+      <div ref={containerRef} className="relative space-y-10 pb-4 pl-10 md:space-y-0 md:pl-0">
+        {entries.map((entry, i) => (
+          <TimelineCard
+            key={entry.title}
+            entry={entry}
+            index={i}
+            stop={geometry?.stops[i]}
+            draw={draw}
+            desktop={desktop}
+            cardRef={el => {
+              cardEls.current[i] = el
+            }}
+          />
+        ))}
+
+        {geometry && (
+          <svg
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 overflow-visible"
+            width={geometry.width}
+            height={geometry.height}
+            viewBox={`0 0 ${geometry.width} ${geometry.height}`}
+          >
+            <defs>
+              <linearGradient id="timeline-stroke" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#fafafa" />
+                <stop offset="60%" stopColor="#7c6bf5" />
+                <stop offset="100%" stopColor="#7c6bf5" stopOpacity="0.3" />
+              </linearGradient>
+            </defs>
+            <path d={geometry.d} fill="none" stroke="#1e1e23" strokeWidth={1.5} strokeLinecap="round" />
+            <motion.path
+              d={geometry.d}
+              fill="none"
+              stroke="url(#timeline-stroke)"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              style={{ pathLength: draw }}
+            />
+            {geometry.stops.map((stop, i) => (
+              <Milestone key={i} stop={stop} color={kindStyle[entries[i].kind].dot} draw={draw} />
+            ))}
+          </svg>
+        )}
+      </div>
     </div>
   )
 }
