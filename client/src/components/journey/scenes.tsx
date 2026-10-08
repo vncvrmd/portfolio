@@ -269,7 +269,7 @@ function Arcade({ active, projects }: { active: boolean; projects: JourneyProjec
     return <Sign color="#c4b5fd">Arcade loading…</Sign>
   }
   return (
-    <div className="flex max-w-[92vw] flex-wrap items-end justify-center gap-2 sm:max-w-none sm:flex-nowrap">
+    <div className="flex max-w-[92vw] flex-wrap items-end justify-center gap-2 sm:max-w-[520px]">
       {projects.map((p, i) => (
         <motion.div
           key={p.id}
@@ -535,7 +535,7 @@ export const scenes: Scene[] = [
     when: 'Arcade',
     title: 'The project arcade',
     subtitle: 'Pick a cabinet to open a project',
-    body: <p>Web apps, a mobile app, QA work and systems — each cabinet opens its full details.</p>,
+    body: <p>Client work, my capstone, web and mobile apps, and an AI tutor — each cabinet opens its full details.</p>,
     sky: '#581c87',
     bubble: 'Insert coin 🕹️',
     nav: 'Projects',
@@ -574,7 +574,7 @@ export const scenes: Scene[] = [
     body: (
       <ul className="space-y-1">
         <li>Built a government agency’s public website as the only front-end developer (Angular).</li>
-        <li>Built the admin cost dashboard for ALICE, an AI learning assistant students chat with on Messenger.</li>
+        <li>Built the admin cost dashboard for ALICE, an AI tutor that ALS learners chat with on Messenger.</li>
         <li>Review teammates’ code across the ALICE platform.</li>
       </ul>
     ),

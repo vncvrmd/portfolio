@@ -19,7 +19,7 @@ const entries: Entry[] = [
     subtitle: 'Jun 2026 – Present',
     bullets: [
       'Built a government agency’s public website as the only front-end developer (Angular, TypeScript, SCSS).',
-      'Built the admin cost dashboard for ALICE, an AI learning assistant that students chat with on Facebook Messenger, and review teammates’ code across the platform (Python, FastAPI, React, PostgreSQL).',
+      'Built the admin cost dashboard for ALICE, an AI tutor that Alternative Learning System (ALS) learners chat with on Facebook Messenger, and review teammates’ code across the platform (Python, FastAPI, React, PostgreSQL).',
       'Taught AI literacy to about 2,000 high school and senior high school students and teachers across 8 remote schools in Bicol (Sep 2026), in Bikol, Tagalog, and English.'
     ]
   },
