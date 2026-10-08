@@ -11,7 +11,7 @@ function simpleIcon(slug: string): string {
   return `https://cdn.simpleicons.org/${slug}/b8b8c1`
 }
 
-// Brands not published on Simple Icons (Adobe, Microsoft, Salesforce, Canva, CapCut)
+// Brands not published on Simple Icons (Adobe, Microsoft, Salesforce, Canva, CapCut, C#, SQL Server)
 // are pulled from Iconify's brand icon sets instead, tinted to match.
 function iconifyIcon(icon: string): string {
   return `https://api.iconify.design/${icon}.svg?color=%23b8b8c1`
@@ -24,7 +24,15 @@ const skillIcons: Record<string, string> = {
   'Node.js': simpleIcon('nodedotjs'),
   FastAPI: simpleIcon('fastapi'),
   'ASP.NET Core': simpleIcon('dotnet'),
+  'ASP.NET MVC': simpleIcon('dotnet'),
+  'C#': iconifyIcon('mdi:language-csharp'),
+  'SQL Server': iconifyIcon('devicon-plain:microsoftsqlserver'),
   Kotlin: simpleIcon('kotlin'),
+  'Android Development': simpleIcon('android'),
+  Docker: simpleIcon('docker'),
+  Vercel: simpleIcon('vercel'),
+  Render: simpleIcon('render'),
+  SCSS: simpleIcon('sass'),
   Firebase: simpleIcon('firebase'),
   PostgreSQL: simpleIcon('postgresql'),
   Supabase: simpleIcon('supabase'),
@@ -57,19 +65,23 @@ const skillIcons: Record<string, string> = {
 export const skillGroups: SkillGroup[] = [
   {
     category: 'Web Development',
-    items: ['TypeScript', 'JavaScript', 'Angular', 'React', 'Tailwind CSS', 'Vite', 'HTML', 'CSS', 'Node.js', 'Express', 'FastAPI', 'ASP.NET Core', 'PHP', 'Laravel', 'Python']
+    items: ['TypeScript', 'JavaScript', 'Angular', 'React', 'Tailwind CSS', 'Vite', 'HTML', 'CSS', 'SCSS', 'Node.js', 'Express', 'FastAPI', 'Python', 'PHP', 'Laravel', 'C#', 'ASP.NET Core', 'ASP.NET MVC']
   },
   {
     category: 'Databases & Mobile',
-    items: ['PostgreSQL', 'MySQL', 'Supabase', 'Firebase', 'Kotlin']
+    items: ['PostgreSQL', 'MySQL', 'SQL Server', 'Supabase', 'Firebase', 'Kotlin', 'Android Development']
+  },
+  {
+    category: 'Cloud & Deployment',
+    items: ['Docker', 'Vercel', 'Render', 'Git & GitHub']
   },
   {
     category: 'AI & Workflow',
-    items: ['Claude Code', 'Prompt engineering', 'OpenSpec', 'Git & GitHub']
+    items: ['Claude Code', 'Prompt engineering', 'OpenSpec']
   },
   {
     category: 'Quality Assurance & Testing',
-    items: ['Jest', 'Vitest', 'React Testing Library', 'Cypress', 'Mocha', 'Supertest', 'Security testing', 'Bug reporting']
+    items: ['Jest', 'Vitest', 'React Testing Library', 'Cypress', 'Mocha', 'Supertest', 'Security testing', 'Bug reporting', 'Debugging']
   },
   {
     category: 'Salesforce & CRM',

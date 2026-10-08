@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import {
   AnimatePresence,
   motion,
@@ -114,15 +114,59 @@ function SceneCard({ scene, index, progress }: { scene: Scene; index: number; pr
   )
 }
 
+const EDGE_GAP_PX = 12 // space kept between a prop and the right edge of the screen
+
 function Landmark({ scene, active, ctx }: { scene: Scene; active: boolean; ctx: SceneContext }) {
+  const propRef = useRef<HTMLDivElement>(null)
+  const fitRef = useRef<HTMLDivElement>(null)
+  const [fit, setFit] = useState(1)
+
+  // Shrink props that are wider than the space to the right of their anchor (mostly phones), so none run off-screen.
+  const measure = useCallback(() => {
+    const prop = propRef.current
+    const inner = fitRef.current
+    const anchor = prop?.parentElement
+    if (!prop || !inner || !anchor) return
+    const style = getComputedStyle(prop)
+    const sceneScale = parseFloat(style.scale) || 1
+    // The scene scale shrinks around the prop's transform origin, which shifts its left edge by originX * (1 - scale).
+    const originX = parseFloat(style.transformOrigin) || 0
+    const left = anchor.offsetLeft + originX * (1 - sceneScale)
+    const available = window.innerWidth - EDGE_GAP_PX - left
+    const scaledWidth = inner.scrollWidth * sceneScale
+    const next = scaledWidth > available ? Math.max(available, 0) / scaledWidth : 1
+    setFit(prev => (Math.abs(prev - next) < 0.001 ? prev : next))
+  }, [])
+
+  // Re-measure after every render too: content that arrives later (the arcade's projects) doesn't always trigger the observer.
+  useLayoutEffect(() => {
+    measure()
+  })
+
+  useLayoutEffect(() => {
+    const inner = fitRef.current
+    if (!inner) return
+    const observer = new ResizeObserver(measure)
+    observer.observe(inner)
+    window.addEventListener('resize', measure)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', measure)
+    }
+  }, [measure])
+
   return (
     <motion.div
+      ref={propRef}
       className="journey-prop origin-bottom"
       initial={false}
       animate={active ? { scaleY: 1, opacity: 1, y: 0 } : { scaleY: 0.2, opacity: 0, y: 30 }}
       transition={{ type: 'spring', stiffness: 320, damping: 13 }}
     >
-      {scene.prop(active, ctx)}
+      {/* String value: React would append "px" to a bare number for `scale`, which the browser rejects. */}
+      <div ref={fitRef} className="w-max origin-bottom-left" style={fit < 1 ? { scale: String(fit) } : undefined}>
+        {scene.prop(active, ctx)}
+      </div>
     </motion.div>
   )
 }

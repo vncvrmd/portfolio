@@ -63,7 +63,10 @@ const entries: Entry[] = [
     kind: 'Campus',
     title: 'Project Head & Lead Organizer',
     subtitle: 'Various Dates',
-    bullets: ['Headed university events including Crank IT, Build IT 2023, and UST Paskuhan 2024 and 2025 (Lead Organizer and Documentation Head).']
+    bullets: [
+      'Headed university events including ROARientation and Welcome Walk 2024, Thomasian Welcome Party 2024, R101 2024 and 2025, Thomasian Youth Ambassador and Ambassadress 2025, MAKIBATA 2025, Secretariat 2024, Diamonds 2024, and SOCC’s 50th Homecoming Anniversary.',
+      'Lead Organizer and Documentation Head for UST Paskuhan 2024 and 2025.'
+    ]
   },
   {
     kind: 'Academics',

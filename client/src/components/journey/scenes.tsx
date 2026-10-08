@@ -1,6 +1,12 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
+import { Building, Confetti, Sign, ink } from './primitives'
+import { AliceLab } from './props/AliceLab'
+import { AwardMedals } from './props/AwardMedals'
+import { CampusEvents } from './props/CampusEvents'
+import { GalaxyAmbassador } from './props/GalaxyAmbassador'
+import { certifications } from '../../pages/Certifications'
 
 export interface JourneyProject {
   id: number
@@ -36,106 +42,6 @@ export interface Scene {
   prop: (active: boolean, ctx: SceneContext) => ReactNode
 }
 
-const ink = 'border-[3px] border-[#09090b]'
-
-function Building({ label, color, floors = 4, width = 160 }: { label: string; color: string; floors?: number; width?: number }) {
-  return (
-    <div className="flex flex-col items-center" aria-hidden="true">
-      <div className={`mb-1 rounded-sm ${ink} bg-white px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest text-surface`}>{label}</div>
-      <div className={`${ink} border-b-0 shadow-[8px_0_0_rgba(0,0,0,0.25)]`} style={{ width, background: color }}>
-        {Array.from({ length: floors }, (_, f) => (
-          <div key={f} className="flex justify-around px-2 py-2">
-            {Array.from({ length: 3 }, (_, w) => (
-              <span key={w} className="h-5 w-5 border-2 border-[#09090b] bg-[#fde68a]" />
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function Sign({ children, color = '#fef3c7' }: { children: ReactNode; color?: string }) {
-  return (
-    <div className="flex flex-col items-center" aria-hidden="true">
-      <div className={`rounded-md ${ink} px-4 py-2 font-heading text-sm font-bold text-surface shadow-[4px_4px_0_#09090b]`} style={{ background: color }}>
-        {children}
-      </div>
-      <span className="h-16 w-2 border-x-[3px] border-[#09090b] bg-[#92400e]" />
-    </div>
-  )
-}
-
-// Parol: the Filipino star lantern, hung over the Paskuhan stage.
-function Parol({ color, delay }: { color: string; delay: number }) {
-  return (
-    <motion.svg width="34" height="44" viewBox="0 0 34 44" animate={{ rotate: [-6, 6, -6] }} transition={{ duration: 2.4, repeat: Infinity, delay }}>
-      <line x1="17" y1="0" x2="17" y2="8" stroke="#09090b" strokeWidth="2" />
-      <polygon points="17,8 21,18 32,18 23,25 26,36 17,29 8,36 11,25 2,18 13,18" fill={color} stroke="#09090b" strokeWidth="2" />
-      <path d="M13 34 L11 44 M21 34 L23 44" stroke={color} strokeWidth="2" />
-    </motion.svg>
-  )
-}
-
-function EventStages({ active }: { active: boolean }) {
-  const stages = [
-    { name: 'Crank IT', color: '#f472b6' },
-    { name: 'Build IT 2023', color: '#38bdf8' },
-    { name: 'Paskuhan 24–25', color: '#facc15' }
-  ]
-  return (
-    <div className="flex items-end gap-4" aria-hidden="true">
-      <Building label="Org HQ" color="#0f766e" floors={3} width={120} />
-      {stages.map((s, i) => (
-        <motion.div
-          key={s.name}
-          className="flex flex-col items-center"
-          initial={false}
-          animate={active ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 14, delay: active ? 0.15 + i * 0.15 : 0 }}
-        >
-          {i === 2 && (
-            <div className="mb-1 flex gap-2">
-              <Parol color="#f43f5e" delay={0} />
-              <Parol color="#facc15" delay={0.4} />
-            </div>
-          )}
-          <div className={`${ink} px-2 py-1 font-mono text-[10px] font-bold uppercase text-surface`} style={{ background: s.color }}>
-            {s.name}
-          </div>
-          <div className={`h-12 w-24 ${ink} border-t-0 bg-[#1f2937]`} />
-        </motion.div>
-      ))}
-    </div>
-  )
-}
-
-// Fixed spread so the burst looks the same every time (no Math.random during render).
-const confettiSpread = Array.from({ length: 24 }, (_, i) => {
-  const r1 = Math.abs(Math.sin(i * 91.7)) % 1
-  const r2 = Math.abs(Math.sin(i * 37.3)) % 1
-  return { angle: -Math.PI / 2 + (r1 - 0.5) * Math.PI * 0.9, dist: 90 + r2 * 90 }
-})
-
-function Confetti({ active }: { active: boolean }) {
-  if (!active) return null
-  const colors = ['#a3e635', '#7c6bf5', '#f472b6', '#facc15', '#38bdf8']
-  return (
-    <span className="pointer-events-none absolute left-1/2 top-0" aria-hidden="true">
-      {confettiSpread.map(({ angle, dist }, i) => (
-        <motion.span
-          key={i}
-          className="absolute h-2 w-1.5"
-          style={{ background: colors[i % colors.length] }}
-          initial={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
-          animate={{ x: Math.cos(angle) * dist, y: [0, Math.sin(angle) * dist, 160], rotate: 540, opacity: [1, 1, 0] }}
-          transition={{ duration: 1.8, ease: 'easeOut', delay: i * 0.015 }}
-        />
-      ))}
-    </span>
-  )
-}
-
 function Trophy({ active }: { active: boolean }) {
   return (
     <div className="relative flex flex-col items-center" aria-hidden="true">
@@ -152,12 +58,12 @@ function Trophy({ active }: { active: boolean }) {
   )
 }
 
-const toolbox = ['Apex', 'Flow', 'React', 'Angular', 'Node.js', 'Python', 'Laravel', 'Kotlin', 'SQL']
+const toolbox = ['Apex', 'Flow', 'React', 'Angular', 'TypeScript', 'Node.js', 'Python', 'FastAPI', 'Laravel', 'Kotlin', 'SQL', 'Docker']
 
 // Tool crates drop in one after another and stack up when the character arrives.
 function Crates({ active }: { active: boolean }) {
   return (
-    <div className="grid w-[270px] grid-cols-3 gap-1.5" aria-hidden="true">
+    <div className="grid w-[360px] grid-cols-4 gap-1.5" aria-hidden="true">
       {toolbox.map((tool, i) => (
         <motion.span
           key={tool}
@@ -203,26 +109,6 @@ function BugSwamp({ active }: { active: boolean }) {
           >
             🐞
           </motion.span>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// "One of 50": a crowd grid where a single square lights up.
-function CrowdGrid({ active }: { active: boolean }) {
-  return (
-    <div className="flex flex-col items-center gap-2" aria-hidden="true">
-      <div className={`${ink} bg-[#1d4ed8] px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-white`}>Galaxy Campus Ambassadors</div>
-      <div className="grid grid-cols-10 gap-1">
-        {Array.from({ length: 50 }, (_, i) => (
-          <motion.span
-            key={i}
-            className="h-3.5 w-3.5 border-2 border-[#09090b]"
-            initial={false}
-            animate={{ backgroundColor: active && i === 27 ? '#a3e635' : '#93c5fd', scale: active && i === 27 ? 1.5 : 1 }}
-            transition={{ duration: 0.4, delay: active ? 0.5 : 0 }}
-          />
         ))}
       </div>
     </div>
@@ -299,26 +185,43 @@ function Arcade({ active, projects }: { active: boolean; projects: JourneyProjec
   )
 }
 
+const passportUrl = certifications.find(c => c.title.startsWith('Information Technology Passport'))?.url
+const geminiUrl = certifications.find(c => c.title.startsWith('Gemini'))?.url
+
+// The stamp and badge are real links to each credential's verification page.
 function Credentials({ active }: { active: boolean }) {
+  const link = 'pointer-events-auto cursor-pointer transition-transform duration-200 hover:-translate-y-1 focus-visible:-translate-y-1'
   return (
-    <div className="flex items-end gap-4" aria-hidden="true">
-      <motion.div
-        className={`flex h-24 w-24 -rotate-6 flex-col items-center justify-center rounded-full ${ink} bg-[#ef4444] text-center font-mono text-[10px] font-bold uppercase text-white`}
+    <div className="flex items-end gap-4">
+      <motion.a
+        href={passportUrl}
+        target="_blank"
+        rel="noreferrer"
+        tabIndex={active ? 0 : -1}
+        aria-label="Verify the Information Technology Passport certification (opens in a new tab)"
+        className={`${link} flex h-24 w-24 -rotate-6 flex-col items-center justify-center rounded-full ${ink} bg-[#ef4444] text-center font-mono text-[10px] font-bold uppercase text-white`}
         initial={false}
         animate={active ? { scale: [2.2, 0.9, 1], opacity: 1 } : { scale: 2.2, opacity: 0 }}
         transition={{ duration: 0.45, delay: active ? 0.2 : 0 }}
       >
         IT Passport
         <span className="text-[8px]">Oct 2025</span>
-      </motion.div>
-      <motion.div
-        className={`${ink} bg-white px-3 py-2 font-mono text-[10px] font-bold uppercase text-surface`}
+        <span className="mt-0.5 text-[8px] underline">Verify ↗</span>
+      </motion.a>
+      <motion.a
+        href={geminiUrl}
+        target="_blank"
+        rel="noreferrer"
+        tabIndex={active ? 0 : -1}
+        aria-label="Verify the Gemini Certified University Student credential (opens in a new tab)"
+        className={`${link} ${ink} bg-white px-3 py-2 font-mono text-[10px] font-bold uppercase text-surface shadow-[4px_4px_0_#09090b]`}
         initial={false}
         animate={active ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 15, delay: active ? 0.5 : 0 }}
       >
         ✦ Gemini Certified
-      </motion.div>
+        <span className="block text-[8px] underline">Verify ↗</span>
+      </motion.a>
     </div>
   )
 }
@@ -340,33 +243,6 @@ function Graduation({ active }: { active: boolean }) {
         <path d="M62 16 V30" stroke="#facc15" strokeWidth="3" />
       </motion.svg>
       <Sign color="#fde68a">🎓 Cum Laude</Sign>
-    </div>
-  )
-}
-
-// Kidlat: the civic tech office, with an ALICE chat popping up beside it.
-function CivicLab({ active }: { active: boolean }) {
-  const chat = [
-    { text: 'Hi ALICE! What is photosynthesis?', mine: true },
-    { text: 'It’s how plants turn sunlight into food 🌱', mine: false },
-    { text: 'Salamat po!', mine: true }
-  ]
-  return (
-    <div className="flex items-end gap-4" aria-hidden="true">
-      <Building label="Kidlat ⚡" color="#0369a1" floors={4} width={140} />
-      <div className="mb-4 flex w-[180px] flex-col gap-1.5">
-        {chat.map((m, i) => (
-          <motion.span
-            key={m.text}
-            className={`${ink} max-w-[160px] rounded-lg px-2 py-1 text-[10px] font-bold leading-tight text-surface ${m.mine ? 'self-end bg-[#bae6fd]' : 'self-start bg-[#fefce8]'}`}
-            initial={false}
-            animate={active ? { scale: 1, opacity: 1 } : { scale: 0.4, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 380, damping: 16, delay: active ? 0.3 + i * 0.45 : 0 }}
-          >
-            {m.text}
-          </motion.span>
-        ))}
-      </div>
     </div>
   )
 }
@@ -456,15 +332,15 @@ export const scenes: Scene[] = [
     subtitle: 'Chief of Staff / VP for Quality Management & Assurance',
     body: (
       <p>
-        Led quality checks across student organizations, served as VP of the Project Evaluations Committee, and headed Crank IT, Build IT 2023, and UST
-        Paskuhan 2024 and 2025.
+        Led quality checks across student organizations, served as VP of the Project Evaluations Committee, and headed university events from
+        ROARientation and R101 to SOCC’s 50th Homecoming Anniversary and UST Paskuhan 2024 and 2025.
       </p>
     ),
     sky: '#2e2170',
     bubble: 'Event day!',
     nav: 'Experience',
     flag: '2023',
-    prop: active => <EventStages active={active} />
+    prop: active => <CampusEvents active={active} />
   },
   {
     id: 'mlq',
@@ -483,8 +359,9 @@ export const scenes: Scene[] = [
     title: 'What I build with',
     body: (
       <ul className="space-y-1">
-        <li>Web — Angular, React, TypeScript, Node.js, FastAPI, Laravel, PostgreSQL</li>
-        <li>Mobile — Kotlin, Firebase</li>
+        <li>Web — Angular, React, TypeScript, Node.js, FastAPI, Laravel, ASP.NET</li>
+        <li>Data & mobile — PostgreSQL, MySQL, SQL Server, Supabase, Firebase, Kotlin</li>
+        <li>Cloud — Docker, Vercel, Render, Git & GitHub</li>
         <li>AI — Claude Code, prompt engineering, spec-driven development</li>
         <li>Salesforce — Apex, SOQL/SOSL, Flow, schema modeling</li>
       </ul>
@@ -499,10 +376,10 @@ export const scenes: Scene[] = [
     when: '2025 – 2026',
     title: 'Samsung Galaxy Campus Ambassador',
     subtitle: 'Batch 3 — one of 50 students nationwide',
-    body: <p>Drove brand advocacy and ran strategic engagement missions on campus.</p>,
+    body: <p>One of 50 students picked nationwide to promote Samsung and run campus activities.</p>,
     sky: '#1e3a8a',
     bubble: 'Say cheese 📱',
-    prop: active => <CrowdGrid active={active} />
+    prop: active => <GalaxyAmbassador active={active} />
   },
   {
     id: 'qa',
@@ -560,15 +437,9 @@ export const scenes: Scene[] = [
     id: 'grad',
     when: 'June 2026',
     title: 'Graduated Cum Laude',
-    body: (
-      <p>
-        BS Information Technology, University of Santo Tomas, with a GWA of 1.721. In July 2026 I also received the St. Dominic de Guzman Award and the
-        Pope Leo XIII Community Development Award.
-      </p>
-    ),
+    body: <p>BS Information Technology, University of Santo Tomas, with a GWA of 1.721.</p>,
     sky: '#7c2d12',
     bubble: 'Cum Laude! 🎓',
-    nav: 'Awards',
     flag: '2026',
     prop: active => <Graduation active={active} />
   },
@@ -587,7 +458,22 @@ export const scenes: Scene[] = [
     sky: '#0c4a6e',
     bubble: 'Shipping! ⚡',
     nav: 'Experience',
-    prop: active => <CivicLab active={active} />
+    prop: active => <AliceLab active={active} />
+  },
+  {
+    id: 'awards',
+    when: 'July 2026',
+    title: 'Two more awards',
+    subtitle: 'University of Santo Tomas',
+    body: (
+      <p>
+        The St. Dominic de Guzman Award for organizing student activities and leading quality checks, and the Pope Leo XIII Community Development Award.
+      </p>
+    ),
+    sky: '#312e81',
+    bubble: 'Salamat po! 🏅',
+    nav: 'Awards',
+    prop: active => <AwardMedals active={active} />
   },
   {
     id: 'bicol',

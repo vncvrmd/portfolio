@@ -17,10 +17,6 @@ export const awards: RecordItem[] = [
   {
     title: 'Manuel L. Quezon Leadership Award (College Level)',
     detail: 'University of Santo Tomas · July 2025'
-  },
-  {
-    title: 'Outstanding Academic Achiever, Dean’s List',
-    detail: 'University of Santo Tomas · 2022–2026'
   }
 ]
 
