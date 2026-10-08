@@ -9,6 +9,7 @@ import Home from './pages/Home'
 import ProjectsPage from './pages/Projects'
 import ContactPage from './pages/Contact'
 import Certifications from './pages/Certifications'
+import Awards from './pages/Awards'
 import Skills from './pages/Skills'
 import Experience from './pages/Experience'
 import ProjectDetail from './pages/ProjectDetail'
@@ -24,6 +25,7 @@ const sections = [
   { id: 'experience', label: 'Experience', Component: Experience },
   { id: 'skills', label: 'Skills', Component: Skills },
   { id: 'certifications', label: 'Certifications', Component: Certifications },
+  { id: 'awards', label: 'Awards', Component: Awards },
   { id: 'contact', label: 'Contact', Component: ContactPage }
 ]
 

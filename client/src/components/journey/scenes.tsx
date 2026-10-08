@@ -560,9 +560,15 @@ export const scenes: Scene[] = [
     id: 'grad',
     when: 'June 2026',
     title: 'Graduated Cum Laude',
-    body: <p>BS Information Technology, University of Santo Tomas, with a GWA of 1.721.</p>,
+    body: (
+      <p>
+        BS Information Technology, University of Santo Tomas, with a GWA of 1.721. In July 2026 I also received the St. Dominic de Guzman Award and the
+        Pope Leo XIII Community Development Award.
+      </p>
+    ),
     sky: '#7c2d12',
     bubble: 'Cum Laude! 🎓',
+    nav: 'Awards',
     flag: '2026',
     prop: active => <Graduation active={active} />
   },

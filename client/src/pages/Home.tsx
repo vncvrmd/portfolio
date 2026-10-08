@@ -10,7 +10,7 @@ import CountUp from '../components/reactbits/CountUp'
 import SpotlightCard from '../components/reactbits/SpotlightCard'
 import { apiUrl } from '../api'
 import { certifications } from './Certifications'
-import { skillGroups } from './Skills'
+import { awards } from './Awards'
 
 interface About {
   headline: string
@@ -24,7 +24,8 @@ interface Project {
 const highlights = [
   { to: '/#experience', title: 'Experience', description: 'Contract and freelance work, an internship, and leadership roles.' },
   { to: '/#skills', title: 'Skills', description: 'Full-stack development, AI tools, QA, and Salesforce.' },
-  { to: '/#certifications', title: 'Certifications', description: 'Certifications, awards, and academic honors.' }
+  { to: '/#certifications', title: 'Certifications', description: 'IT Passport and Google Gemini certifications.' },
+  { to: '/#awards', title: 'Awards', description: 'University awards and academic honors.' }
 ]
 
 export default function Home() {
@@ -48,7 +49,7 @@ export default function Home() {
   const stats = [
     { label: 'Projects', value: projectCount },
     { label: 'Certifications', value: certifications.length },
-    { label: 'Skill areas', value: skillGroups.length }
+    { label: 'Awards', value: awards.length }
   ]
 
   // Journey mode: the whole home page is the journey (the start game sits on top until it's done).
@@ -73,7 +74,7 @@ export default function Home() {
 
       <section>
         <SectionHeading label="Explore" title="Quick links" size="md" className="mb-6" />
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {highlights.map((item, index) => (
             <Reveal key={item.to} delay={Math.min(index * 80, 200)} className="h-full">
               <ScrollLink to={item.to} className="group block h-full">
