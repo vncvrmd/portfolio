@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useLenis } from 'lenis/react'
 import { useMotionPreference } from '../motionPreference'
 
-const SESSION_KEY = 'intro-seen'
 const BEST_KEY = 'bug-squash-best'
 const BUG_COUNT = 5
 const easeOut = [0.16, 1, 0.3, 1] as const
@@ -15,7 +14,7 @@ interface IntroState {
 
 const IntroContext = createContext<IntroState>({ done: true, replay: () => {} })
 
-// True once the start game has finished or been skipped, so the hero can start its own entrance.
+// False only while the opt-in bug-squash game is open, so the hero can start its own entrance afterwards.
 export function useIntroDone(): boolean {
   return useContext(IntroContext).done
 }
@@ -36,7 +35,7 @@ function writeStorage(storage: 'session' | 'local', key: string, value: string) 
   try {
     ;(storage === 'session' ? sessionStorage : localStorage).setItem(key, value)
   } catch {
-    // Storage unavailable (private mode): the game just shows again next load.
+    // Storage unavailable (private mode): the best time just isn't remembered.
   }
 }
 
@@ -139,7 +138,6 @@ function BugSquashGame({ onDone }: { onDone: () => void }) {
   const exit = useCallback(() => {
     if (exited.current) return
     exited.current = true
-    writeStorage('session', SESSION_KEY, '1')
     onDone()
   }, [onDone])
 
@@ -177,7 +175,7 @@ function BugSquashGame({ onDone }: { onDone: () => void }) {
       exit={{ opacity: 0, transition: { duration: 0.5, ease: easeOut } }}
       role="dialog"
       aria-modal="true"
-      aria-label="Bug squash — a quick game before entering the portfolio"
+      aria-label="Bug squash — a quick mini-game"
     >
       <div className="flex items-center justify-between px-6 py-5 sm:px-10">
         <span className="font-heading text-sm font-semibold tracking-tight text-ink">
@@ -188,16 +186,16 @@ function BugSquashGame({ onDone }: { onDone: () => void }) {
           onClick={exit}
           className="nav-underline relative min-h-[44px] cursor-pointer px-3 py-1.5 text-sm text-muted transition-colors duration-200 hover:text-ink"
         >
-          Skip to site →
+          Back to site →
         </button>
       </div>
 
       <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-6 pb-8 sm:px-10">
         <div className="flex flex-wrap items-end justify-between gap-4 pb-6">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">00 — Warm-up</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Mini-game</p>
             <h1 className="mt-3 font-heading text-3xl font-semibold tracking-[-0.03em] text-ink sm:text-5xl">
-              {cleared ? 'All clear. Welcome in.' : `Squash ${BUG_COUNT} bugs to enter.`}
+              {cleared ? 'All clear. Nice work.' : `Squash ${BUG_COUNT} bugs.`}
             </h1>
           </div>
           <div className="text-right font-mono text-xs text-muted" aria-live="polite">
@@ -229,7 +227,7 @@ function BugSquashGame({ onDone }: { onDone: () => void }) {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, ease: easeOut }}
             >
-              <p className="font-mono text-sm text-ok">✓ 0 bugs remaining — entering portfolio…</p>
+              <p className="font-mono text-sm text-ok">✓ 0 bugs remaining — back to the portfolio…</p>
             </motion.div>
           )}
           <div className="absolute inset-x-0 bottom-0 h-px bg-edge">
@@ -246,9 +244,8 @@ function BugSquashGame({ onDone }: { onDone: () => void }) {
 }
 
 export function IntroProvider({ children }: { children: ReactNode }) {
-  const [done, setDone] = useState(
-    () => readStorage('session', SESSION_KEY) === '1' || window.location.pathname !== '/'
-  )
+  // The game is opt-in: the site opens straight away and visitors start it from a "Play" button.
+  const [done, setDone] = useState(true)
   const [round, setRound] = useState(0)
   const lenis = useLenis()
 

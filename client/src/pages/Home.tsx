@@ -22,9 +22,9 @@ interface Project {
 }
 
 const highlights = [
-  { to: '/#experience', title: 'Experience', description: 'Internships, leadership roles, and education.' },
-  { to: '/#skills', title: 'Skills', description: 'Salesforce, full-stack development, and QA.' },
-  { to: '/#certifications', title: 'Certifications', description: 'Credentials and academic honors.' }
+  { to: '/#experience', title: 'Experience', description: 'Contract and freelance work, an internship, and leadership roles.' },
+  { to: '/#skills', title: 'Skills', description: 'Full-stack development, AI tools, QA, and Salesforce.' },
+  { to: '/#certifications', title: 'Certifications', description: 'Certifications, awards, and academic honors.' }
 ]
 
 export default function Home() {

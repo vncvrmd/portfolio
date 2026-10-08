@@ -5,36 +5,40 @@ namespace Portfolio.Api.Data;
 public static class PortfolioData
 {
     public static readonly About About = new(
-        Headline: "IT professional building modern, scalable web applications.",
+        Headline: "Software developer building web apps with Angular, React, TypeScript, and Python.",
         Details: new[]
         {
-            "Recent graduate with hands-on experience designing full-stack solutions.",
-            "Strong foundation in frontend design, backend services, and developer tooling.",
-            "I enjoy turning complex problems into clean, user-focused web experiences."
+            "Contractor at Kidlat CivicLabs, working on a government agency's website and ALICE, an AI learning assistant for students.",
+            "QA officer and developer on a freelance management system for a multi-branch dental clinic.",
+            "Former Salesforce developer intern at Accenture, and a Cum Laude IT graduate from the University of Santo Tomas."
         });
 
     public static readonly IReadOnlyList<string> Skills = new[]
     {
-        "React",
         "TypeScript",
-        "ASP.NET Core",
-        "C#",
-        "Tailwind CSS",
-        "REST APIs",
-        "Git",
-        "Responsive design",
-        "Vite",
-        "Deployment"
+        "Angular",
+        "React",
+        "Python",
+        "FastAPI",
+        "Node.js",
+        "PostgreSQL",
+        "Laravel",
+        "Kotlin",
+        "Salesforce Apex",
+        "Cypress",
+        "Claude Code"
     };
 
     public static readonly IReadOnlyList<Project> Projects = new[]
     {
-        new Project(1, "Project BASAdent", "Quality Assurance Officer (Present) — overseeing end-to-end QA strategies for a full-stack application (React, Node.js, PostgreSQL). Established unit and component testing (Jest, Vitest, React Testing Library), E2E and HTTP testing (Cypress, Supertest), and managed data/file storage integration using Supabase/NeonDB and Cloudinary/Cloudflare R2.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=Project+BASAdent", TechStack: new[] { "React", "Node.js", "PostgreSQL", "Jest", "Cypress" }),
-        new Project(2, "LMD Dental Clinic", "Business Analyst — designed the website with an appointment booking system.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=LMD+Dental+Clinic"),
-        new Project(3, "OBRA", "Full Stack Developer — developed a complete mobile application using Swift.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=OBRA", TechStack: new[] { "Swift" }),
-        new Project(4, "UST RE-CYCLE", "Front-End Developer — built a mock web application for campus recycling.", "https://ust-re-cycle.vercel.app", ImageUrl: "/images/ust-re-cycle.jpg"),
-        new Project(5, "Panorama", "UI/UX Designer — created a web application with a focus on a strong user experience.", "", ImageUrl: "/images/panorama.jpg"),
-        new Project(6, "Falcon Eye", "Campus safety and lost & found web application for a school community, with account registration and sign-in.", "https://falcon-eye.vercel.app", ImageUrl: "/images/falcon-eye.jpg", TechStack: new[] { "React" }),
-        new Project(7, "POS & Inventory Management System", "Full Stack Developer — built a Laravel POS and inventory management system with admin/employee roles, product and customer management, sales and transaction tracking, and a customer portal with checkout and receipts.", "https://github.com/vncvrmd/FinalProject/", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=POS+%26+Inventory", TechStack: new[] { "Laravel", "MySQL", "Tailwind CSS" })
+        new Project(8, "Government Agency Website", "Front-End Developer (Kidlat CivicLabs) — built a government agency's public website as the only front-end developer. Made the main menu, mobile menu, and site search work with a keyboard, added dark mode, and set the site up to run on the agency's own servers without outside services.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=Government+Website", TechStack: new[] { "Angular", "TypeScript", "SCSS", "Vitest" }),
+        new Project(9, "ALICE", "Developer and Consultant (Kidlat CivicLabs) — an AI learning assistant that students chat with on Facebook Messenger. Built the admin cost dashboard that shows how much the chatbot costs to run and how many replies it sends, fixed a bug that made the total cost come out wrong, and review teammates' code across the platform.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=ALICE", TechStack: new[] { "Python", "FastAPI", "React", "TypeScript", "PostgreSQL" }),
+        new Project(1, "Project BASAdent", "QA Officer and Developer (Freelance) — a management system for a multi-branch dental clinic, covering appointments, patient records, dental charts, billing, and inventory. I plan and run testing, filed 120 bug reports and improvement tickets rated by severity, did a security review before launch, and fixed over 10 bugs.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=Project+BASAdent", TechStack: new[] { "React", "Node.js", "PostgreSQL", "Supabase", "Jest", "Vitest", "Cypress", "Supertest" }),
+        new Project(7, "POS & Inventory Management System", "Full Stack Developer — built a Laravel POS and inventory system with admin and employee roles, product and customer management, sales and transaction tracking, and a customer portal with checkout and receipts.", "https://github.com/vncvrmd/FinalProject/", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=POS+%26+Inventory", TechStack: new[] { "PHP", "Laravel", "MySQL", "Tailwind CSS", "Docker" }),
+        new Project(3, "OBRA", "Android Developer — an art-sharing app with comments, likes, and search. Reorganized the code, added search, and fixed security bugs, including one that let users skip the login screen.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=OBRA", TechStack: new[] { "Kotlin", "Firebase" }),
+        new Project(6, "Falcon Eye", "QA Tester — a school safety and incident reporting app with lost and found. Wrote and ran 500+ manual test cases.", "https://falcon-eye.vercel.app", ImageUrl: "/images/falcon-eye.jpg", TechStack: new[] { "React" }),
+        new Project(4, "UST RE-CYCLE", "Front-End Developer — a campus e-waste donation app where students get a digital certificate for donating their old devices.", "https://ust-re-cycle.vercel.app", ImageUrl: "/images/ust-re-cycle.jpg", TechStack: new[] { "React", "Node.js", "Supabase" }),
+        new Project(2, "LMD Dental Clinic", "Business Analyst — a patient website with appointment booking.", "", ImageUrl: "https://placehold.co/800x450/161b27/a3e635?text=LMD+Dental+Clinic"),
+        new Project(5, "Panorama", "UI/UX Designer — a web app focused on easy, clear user flows.", "", ImageUrl: "/images/panorama.jpg")
     };
 }

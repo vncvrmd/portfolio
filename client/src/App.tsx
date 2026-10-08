@@ -266,7 +266,7 @@ function App() {
               onClick={replayGame}
               className="nav-underline relative cursor-pointer px-3 py-1 font-mono text-xs text-muted transition-colors duration-200 hover:text-ink"
             >
-              Play the bug-squash game again
+              Play the bug-squash game
             </button>
           )}
         </footer>

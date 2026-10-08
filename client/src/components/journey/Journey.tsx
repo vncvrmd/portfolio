@@ -16,6 +16,7 @@ import { scenes, type JourneyProject, type Scene, type SceneContext } from './sc
 import JourneyFinale from './JourneyFinale'
 import { apiUrl } from '../../api'
 import { useSound } from '../../soundPreference'
+import { useReplayIntro } from '../Intro'
 
 const ASCENT_SCENES = 1.6 // extra scroll (in scenes) for the balloon ride up to the finale
 const STRIDE_PX = 55 // scroll distance per walk-cycle frame
@@ -380,7 +381,8 @@ export default function Journey() {
     return () => window.removeEventListener('keydown', onKey)
   }, [goToScene, phase, sceneIndex])
 
-  const ctx = useMemo<SceneContext>(() => ({ projects }), [projects])
+  const playGame = useReplayIntro()
+  const ctx = useMemo<SceneContext>(() => ({ projects, playGame }), [projects, playGame])
   const bubble = phase === 'finale' ? 'You made it! 🎉' : phase === 'ascent' ? 'Up we go! 🎈' : scenes[sceneIndex].bubble
 
   return (

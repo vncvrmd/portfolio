@@ -18,12 +18,21 @@ function iconifyIcon(icon: string): string {
 }
 
 const skillIcons: Record<string, string> = {
+  TypeScript: simpleIcon('typescript'),
+  Angular: simpleIcon('angular'),
   React: simpleIcon('react'),
   'Node.js': simpleIcon('nodedotjs'),
+  FastAPI: simpleIcon('fastapi'),
+  'ASP.NET Core': simpleIcon('dotnet'),
+  Kotlin: simpleIcon('kotlin'),
+  Firebase: simpleIcon('firebase'),
+  PostgreSQL: simpleIcon('postgresql'),
+  Supabase: simpleIcon('supabase'),
+  'Claude Code': simpleIcon('claude'),
+  'Git & GitHub': simpleIcon('github'),
   Express: simpleIcon('express'),
   'Tailwind CSS': simpleIcon('tailwindcss'),
   Vite: simpleIcon('vite'),
-  Swift: simpleIcon('swift'),
   HTML: simpleIcon('html5'),
   CSS: simpleIcon('css'),
   JavaScript: simpleIcon('javascript'),
@@ -47,20 +56,28 @@ const skillIcons: Record<string, string> = {
 
 export const skillGroups: SkillGroup[] = [
   {
-    category: 'Salesforce & CRM',
-    items: ['Apex (classes, triggers, DML)', 'SOQL/SOSL queries', 'Salesforce Flow', 'Schema modeling']
+    category: 'Web Development',
+    items: ['TypeScript', 'JavaScript', 'Angular', 'React', 'Tailwind CSS', 'Vite', 'HTML', 'CSS', 'Node.js', 'Express', 'FastAPI', 'ASP.NET Core', 'PHP', 'Laravel', 'Python']
   },
   {
-    category: 'Web & Mobile Development',
-    items: ['React', 'Node.js', 'Express', 'Tailwind CSS', 'Vite', 'Swift', 'HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL', 'Laravel', 'Python']
+    category: 'Databases & Mobile',
+    items: ['PostgreSQL', 'MySQL', 'Supabase', 'Firebase', 'Kotlin']
+  },
+  {
+    category: 'AI & Workflow',
+    items: ['Claude Code', 'Prompt engineering', 'OpenSpec', 'Git & GitHub']
   },
   {
     category: 'Quality Assurance & Testing',
-    items: ['Jest', 'Vitest', 'React Testing Library', 'Cypress', 'Mocha', 'Supertest']
+    items: ['Jest', 'Vitest', 'React Testing Library', 'Cypress', 'Mocha', 'Supertest', 'Security testing', 'Bug reporting']
+  },
+  {
+    category: 'Salesforce & CRM',
+    items: ['Apex (classes, triggers, DML)', 'SOQL/SOSL queries', 'Salesforce Flow', 'Data Loader', 'Schema modeling']
   },
   {
     category: 'Leadership & Management',
-    items: ['Project management', 'Strategic planning', 'Documentation', 'Quality management']
+    items: ['Project management', 'Strategic planning', 'Technical training', 'Documentation', 'Quality management']
   },
   {
     category: 'Multimedia Production',

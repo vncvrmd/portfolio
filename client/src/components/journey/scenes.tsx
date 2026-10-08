@@ -10,6 +10,7 @@ export interface JourneyProject {
 
 export interface SceneContext {
   projects: JourneyProject[]
+  playGame: () => void
 }
 
 // A raised platform inside a scene slot, in vw from the slot's left edge; the character hops onto it.
@@ -80,7 +81,7 @@ function EventStages({ active }: { active: boolean }) {
   const stages = [
     { name: 'Crank IT', color: '#f472b6' },
     { name: 'Build IT 2023', color: '#38bdf8' },
-    { name: 'Paskuhan 2024', color: '#facc15' }
+    { name: 'Paskuhan 24–25', color: '#facc15' }
   ]
   return (
     <div className="flex items-end gap-4" aria-hidden="true">
@@ -151,7 +152,7 @@ function Trophy({ active }: { active: boolean }) {
   )
 }
 
-const toolbox = ['Apex', 'Flow', 'SOQL', 'React', 'Node.js', 'Laravel', 'Swift', 'MySQL', 'Python']
+const toolbox = ['Apex', 'Flow', 'React', 'Angular', 'Node.js', 'Python', 'Laravel', 'Kotlin', 'SQL']
 
 // Tool crates drop in one after another and stack up when the character arrives.
 function Crates({ active }: { active: boolean }) {
@@ -343,17 +344,83 @@ function Graduation({ active }: { active: boolean }) {
   )
 }
 
+// Kidlat: the civic tech office, with an ALICE chat popping up beside it.
+function CivicLab({ active }: { active: boolean }) {
+  const chat = [
+    { text: 'Hi ALICE! What is photosynthesis?', mine: true },
+    { text: 'It’s how plants turn sunlight into food 🌱', mine: false },
+    { text: 'Salamat po!', mine: true }
+  ]
+  return (
+    <div className="flex items-end gap-4" aria-hidden="true">
+      <Building label="Kidlat ⚡" color="#0369a1" floors={4} width={140} />
+      <div className="mb-4 flex w-[180px] flex-col gap-1.5">
+        {chat.map((m, i) => (
+          <motion.span
+            key={m.text}
+            className={`${ink} max-w-[160px] rounded-lg px-2 py-1 text-[10px] font-bold leading-tight text-surface ${m.mine ? 'self-end bg-[#bae6fd]' : 'self-start bg-[#fefce8]'}`}
+            initial={false}
+            animate={active ? { scale: 1, opacity: 1 } : { scale: 0.4, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 16, delay: active ? 0.3 + i * 0.45 : 0 }}
+          >
+            {m.text}
+          </motion.span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// Bicol: eight schoolhouses pop up one by one.
+function Schools({ active }: { active: boolean }) {
+  const roofs = ['#dc2626', '#2563eb', '#16a34a', '#d97706', '#7c3aed', '#db2777', '#0891b2', '#65a30d']
+  return (
+    <div className="flex flex-col items-center gap-2" aria-hidden="true">
+      <div className="grid grid-cols-4 gap-2">
+        {roofs.map((roof, i) => (
+          <motion.svg
+            key={roof}
+            width="44"
+            height="40"
+            viewBox="0 0 44 40"
+            initial={false}
+            animate={active ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 320, damping: 14, delay: active ? 0.15 + i * 0.1 : 0 }}
+          >
+            <polygon points="22,3 41,17 3,17" fill={roof} stroke="#09090b" strokeWidth="3" strokeLinejoin="round" />
+            <rect x="7" y="17" width="30" height="20" fill="#fef3c7" stroke="#09090b" strokeWidth="3" />
+            <rect x="18" y="24" width="8" height="13" fill="#92400e" stroke="#09090b" strokeWidth="2" />
+          </motion.svg>
+        ))}
+      </div>
+      <div className={`${ink} bg-white px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-surface`}>≈ 2,000 learners</div>
+    </div>
+  )
+}
+
 export const scenes: Scene[] = [
   {
     id: 'start',
     when: 'Press start',
     title: 'Hi, I’m Vince Tyrone Vermudo.',
-    subtitle: 'IT graduate · full-stack & Salesforce developer',
+    subtitle: 'Software developer · web apps, AI tools, and QA',
     body: <p>This is my résumé as a walk through Manila. Keep scrolling and I’ll show you where I’ve been.</p>,
     sky: '#1b1640',
     bubble: 'Let’s go! →',
     nav: 'Home',
-    prop: () => <Sign>Scroll to start →</Sign>
+    prop: (active, ctx) => (
+      <div className="flex items-end gap-5">
+        <Sign>Scroll to start →</Sign>
+        <button
+          type="button"
+          onClick={ctx.playGame}
+          tabIndex={active ? 0 : -1}
+          className={`pointer-events-auto mb-2 cursor-pointer rounded-md ${ink} bg-[#a3e635] px-3 py-2 font-mono text-xs font-bold uppercase text-surface shadow-[4px_4px_0_#09090b] transition-transform duration-200 hover:-translate-y-1 focus-visible:-translate-y-1`}
+        >
+          🐞 Play bug squash
+        </button>
+      </div>
+    )
   },
   {
     id: 'ust',
@@ -389,8 +456,8 @@ export const scenes: Scene[] = [
     subtitle: 'Chief of Staff / VP for Quality Management & Assurance',
     body: (
       <p>
-        Led quality management across student organizations, served on the Project Evaluations Committee, and headed Crank IT, Build IT 2023 and UST
-        Paskuhan 2024.
+        Led quality checks across student organizations, served as VP of the Project Evaluations Committee, and headed Crank IT, Build IT 2023, and UST
+        Paskuhan 2024 and 2025.
       </p>
     ),
     sky: '#2e2170',
@@ -416,25 +483,16 @@ export const scenes: Scene[] = [
     title: 'What I build with',
     body: (
       <ul className="space-y-1">
+        <li>Web — Angular, React, TypeScript, Node.js, FastAPI, Laravel, PostgreSQL</li>
+        <li>Mobile — Kotlin, Firebase</li>
+        <li>AI — Claude Code, prompt engineering, spec-driven development</li>
         <li>Salesforce — Apex, SOQL/SOSL, Flow, schema modeling</li>
-        <li>Web & mobile — React, Node.js, Express, Laravel, Swift, MySQL, Python</li>
-        <li>Also — Canva, CapCut, Adobe CC, Microsoft Office, Google Workspace</li>
       </ul>
     ),
     sky: '#0f766e',
     bubble: 'My toolbox.',
     nav: 'Skills',
     prop: active => <Crates active={active} />
-  },
-  {
-    id: 'qa',
-    when: 'Quality',
-    title: 'Squashing bugs for a living',
-    subtitle: 'QA & test automation',
-    body: <p>Jest, Vitest, React Testing Library, Cypress and Supertest — unit, component, E2E and API tests.</p>,
-    sky: '#14532d',
-    bubble: 'Tests green ✓',
-    prop: active => <BugSwamp active={active} />
   },
   {
     id: 'samsung',
@@ -447,10 +505,25 @@ export const scenes: Scene[] = [
     prop: active => <CrowdGrid active={active} />
   },
   {
+    id: 'qa',
+    when: 'Sep 2025 – Present',
+    title: 'Freelance: squashing bugs at BASAdent',
+    subtitle: 'QA Officer and Developer · dental clinic system',
+    body: (
+      <p>
+        I plan and run testing for a multi-branch dental clinic system with Jest, Vitest, React Testing Library, Cypress, and Supertest, and filed 120
+        bug and security reports before launch.
+      </p>
+    ),
+    sky: '#14532d',
+    bubble: 'Tests green ✓',
+    prop: active => <BugSwamp active={active} />
+  },
+  {
     id: 'accenture',
     when: 'Dec 2025 – May 2026',
     title: 'Boss stage: Accenture',
-    subtitle: 'Salesforce Capability internship',
+    subtitle: 'Salesforce Developer Intern · Salesforce Capability',
     body: <p>Automated workflows with Flow, wrote Apex classes and triggers, modeled data, migrated records with Data Loader, and built reports and dashboards.</p>,
     sky: '#4c1d95',
     bubble: 'Automating…',
@@ -487,10 +560,43 @@ export const scenes: Scene[] = [
     id: 'grad',
     when: 'June 2026',
     title: 'Graduated Cum Laude',
-    body: <p>BS Information Technology, University of Santo Tomas. Hop in the balloon — one last stop.</p>,
-    sky: '#9a3412',
+    body: <p>BS Information Technology, University of Santo Tomas, with a GWA of 1.721.</p>,
+    sky: '#7c2d12',
     bubble: 'Cum Laude! 🎓',
     flag: '2026',
     prop: active => <Graduation active={active} />
+  },
+  {
+    id: 'kidlat',
+    when: 'Jun 2026 – Present',
+    title: 'Software Developer at Kidlat CivicLabs',
+    subtitle: 'Civic tech · independent contractor',
+    body: (
+      <ul className="space-y-1">
+        <li>Built a government agency’s public website as the only front-end developer (Angular).</li>
+        <li>Built the admin cost dashboard for ALICE, an AI learning assistant students chat with on Messenger.</li>
+        <li>Review teammates’ code across the ALICE platform.</li>
+      </ul>
+    ),
+    sky: '#0c4a6e',
+    bubble: 'Shipping! ⚡',
+    nav: 'Experience',
+    prop: active => <CivicLab active={active} />
+  },
+  {
+    id: 'bicol',
+    when: 'Sep 2026',
+    title: 'Teaching AI in Bicol',
+    subtitle: '8 remote schools · about 2,000 students and teachers',
+    body: (
+      <p>
+        Kidlat sent me to teach AI basics, good prompting, and the risks of AI to high school and senior high students and their teachers, in Bikol,
+        Tagalog, and English. Hop in the balloon — one last stop.
+      </p>
+    ),
+    sky: '#9a3412',
+    bubble: 'Marhay na aga! 👋',
+    flag: 'Sep 2026',
+    prop: active => <Schools active={active} />
   }
 ]

@@ -38,8 +38,8 @@ const modes: { id: ModeId; label: string; file: string; steps: TerminalStep[] }[
     label: 'Full-stack',
     file: 'deploy.sh',
     steps: [
-      { command: 'whoami', output: 'IT graduate · full-stack & Salesforce developer', tone: 'ink' },
-      { command: 'cat stack.txt', output: 'React · TypeScript · ASP.NET Core · C# · Node.js · Tailwind CSS', tone: 'muted' },
+      { command: 'whoami', output: 'Software developer · Kidlat CivicLabs', tone: 'ink' },
+      { command: 'cat stack.txt', output: 'Angular · React · TypeScript · Python · FastAPI · PostgreSQL', tone: 'muted' },
       { command: './deploy.sh --env production', output: '✓ build passed · deployed to Vercel + Render', tone: 'ok' }
     ]
   },
@@ -274,7 +274,7 @@ export default function LandingHero({ about }: { about: About | null }) {
         <motion.div variants={fadeUp} className="mt-7 flex flex-wrap items-center gap-x-2 gap-y-1 font-heading text-lg text-muted sm:text-xl">
           <span>I specialize in</span>
           <RotatingText
-            texts={['full-stack web apps.', 'Salesforce automation.', 'QA & test automation.']}
+            texts={['full-stack web apps.', 'AI-powered tools.', 'QA & test automation.', 'Salesforce automation.']}
             auto={motionAllowed}
             rotationInterval={2800}
             staggerDuration={0.02}
@@ -290,7 +290,7 @@ export default function LandingHero({ about }: { about: About | null }) {
 
         <motion.p variants={fadeUp} className="mt-5 max-w-lg leading-relaxed text-body">
           {about?.headline ??
-            'IT professional building modern, scalable web applications — from Salesforce automation to full-stack React and ASP.NET Core.'}
+            'Software developer building web apps with Angular, React, TypeScript, and Python.'}
         </motion.p>
 
         {about?.details && about.details.length > 0 && (

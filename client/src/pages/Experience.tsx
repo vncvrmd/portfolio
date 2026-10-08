@@ -15,41 +15,61 @@ interface Entry {
 const entries: Entry[] = [
   {
     kind: 'Career',
-    title: 'Internship, Accenture, Inc. (Salesforce Capability)',
+    title: 'Software Developer (Independent Contractor), Kidlat CivicLabs',
+    subtitle: 'Jun 2026 – Present',
+    bullets: [
+      'Built a government agency’s public website as the only front-end developer (Angular, TypeScript, SCSS).',
+      'Built the admin cost dashboard for ALICE, an AI learning assistant that students chat with on Facebook Messenger, and review teammates’ code across the platform (Python, FastAPI, React, PostgreSQL).',
+      'Taught AI literacy to about 2,000 high school and senior high school students and teachers across 8 remote schools in Bicol (Sep 2026), in Bikol, Tagalog, and English.'
+    ]
+  },
+  {
+    kind: 'Career',
+    title: 'QA Officer and Developer (Freelance), BASAdent Dental Center',
+    subtitle: 'Sep 2025 – Present',
+    bullets: [
+      'Plan and run testing for a multi-branch dental clinic management system with Jest, Vitest, React Testing Library, Cypress, and Supertest.',
+      'Filed 120 bug reports and improvement tickets on GitHub, each rated by severity, and did a security review before launch.',
+      'Fixed over 10 reported bugs, including one where dental charts could save only partly.'
+    ]
+  },
+  {
+    kind: 'Career',
+    title: 'Salesforce Developer Intern, Accenture, Inc. (Salesforce Capability)',
     subtitle: 'Dec 2025 – May 2026',
     bullets: [
-      'Engineered and automated end-to-end business workflows using Salesforce Flow, including Screen, Record-Triggered, and Schedule-Triggered flows to optimize system processes.',
-      'Developed backend automation using Apex classes, triggers, and DML operations, utilizing SOQL and SOSL queries for advanced data retrieval and manipulation.',
-      'Designed complex relational data models, including custom objects, lookup and master-detail relationships, and managed system security through profiles, permission sets, and OWD configurations.',
-      'Performed data migration and integrity management using Data Import Wizard and Data Loader, while building custom reports and dashboards for organizational data analysis.'
+      'Built automated workflows with Salesforce Flow (Screen, Record-Triggered, and Scheduled flows).',
+      'Wrote Apex classes and triggers, and used SOQL and SOSL to query data.',
+      'Set up custom objects, object relationships, and user access with profiles, permission sets, and sharing settings.',
+      'Imported and cleaned data with Data Import Wizard and Data Loader, and made reports and dashboards.'
     ]
   },
   {
     kind: 'Campus',
     title: 'Samsung Galaxy Campus Ambassador (Batch 3)',
-    subtitle: '2025–2026',
-    bullets: ['Selected as one of only 50 students nationwide to drive brand advocacy and execute strategic engagement missions.']
+    subtitle: 'Sep 2025 – Sep 2026',
+    bullets: ['One of 50 students picked nationwide to promote Samsung and run campus activities.']
   },
   {
     kind: 'Campus',
-    title: 'Chief-of-Staff / VP for Quality Management & Assurance',
-    subtitle: '2023 – 2026',
+    title: 'Chief of Staff / VP for Quality Management & Assurance, SOCC',
+    subtitle: 'Sep 2023 – Jun 2026',
     bullets: [
-      'Led quality management and assurance initiatives across student organizations.',
-      'Served as Chief of Staff and Vice President for the Project Evaluations Committee.'
+      'Led quality checks for student organization projects at the Student Organizations Coordinating Council.',
+      'Served as Vice President of the Project Evaluations Committee.'
     ]
   },
   {
     kind: 'Campus',
     title: 'Project Head & Lead Organizer',
     subtitle: 'Various Dates',
-    bullets: ['Directed major university events including Crank IT, Build IT 2023 and UST Paskuhan 2024 (Lead Organizer & Documentation Head).']
+    bullets: ['Headed university events including Crank IT, Build IT 2023, and UST Paskuhan 2024 and 2025 (Lead Organizer and Documentation Head).']
   },
   {
     kind: 'Academics',
     title: 'Bachelor of Science in Information Technology',
     subtitle: 'Major in Web and Mobile Application Development · University of Santo Tomas · August 2022 – June 2026',
-    bullets: ['Cum Laude']
+    bullets: ['Cum Laude, GWA 1.721', 'Dean’s List every year, 2022–2026']
   }
 ]
 

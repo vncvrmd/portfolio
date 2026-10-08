@@ -15,8 +15,20 @@ export const certifications: Certification[] = [
   },
   {
     title: 'Gemini Certified University Student',
-    detail: '',
+    detail: 'Google · June 2026 – June 2029',
     url: 'https://edu.google.accredible.com/622d87cc-9b0a-483d-bb25-6653e5b70e60#acc.TVB9bav8'
+  },
+  {
+    title: 'Cum Laude',
+    detail: 'University of Santo Tomas · June 2026 · GWA 1.721'
+  },
+  {
+    title: 'St. Dominic de Guzman Award',
+    detail: 'University of Santo Tomas · July 2026'
+  },
+  {
+    title: 'Pope Leo XIII Community Development Award',
+    detail: 'University of Santo Tomas · July 2026'
   },
   {
     title: 'Manuel L. Quezon Leadership Award (College Level)',
